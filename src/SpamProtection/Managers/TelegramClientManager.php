@@ -5,6 +5,7 @@
 
 
     use msqg\QueryBuilder;
+    use SpamProtection\Abstracts\TelegramClientSearchMethod;
     use SpamProtection\Exceptions\DatabaseException;
     use SpamProtection\Exceptions\InvalidSearchMethod;
     use SpamProtection\Exceptions\TelegramClientNotFoundException;
@@ -32,19 +33,28 @@
             $this->spamProtection = $spamProtection;
         }
 
-
+        /**
+         * Returns an existing client from the database
+         *
+         * @param string $search_method
+         * @param string $value
+         * @return TelegramClient
+         * @throws DatabaseException
+         * @throws InvalidSearchMethod
+         * @throws TelegramClientNotFoundException
+         */
         public function getClient(string $search_method, string $value): TelegramClient
         {
             switch($search_method)
             {
                 case TelegramClientSearchMethod::byId:
-                    $search_method = $this->intellivoidAccounts->database->real_escape_string($search_method);
+                    $search_method = $this->spamProtection->getDatabase("IVDatabase")->real_escape_string($search_method);
                     $value = (int)$value;
                     break;
 
                 case TelegramClientSearchMethod::byPublicId:
-                    $search_method = $this->intellivoidAccounts->database->real_escape_string($search_method);
-                    $value = $this->intellivoidAccounts->database->real_escape_string($value);;
+                    $search_method = $this->spamProtection->getDatabase("IVDatabase")->real_escape_string($search_method);
+                    $value = $this->spamProtection->getDatabase("IVDatabase")->real_escape_string($value);;
                     break;
 
                 default:
@@ -65,11 +75,11 @@
                 'created'
             ], $search_method, $value);
 
-            $QueryResults = $this->spamProtection->getDatabase()->query($Query);
+            $QueryResults = $this->spamProtection->getDatabase("IVDatabase")->query($Query);
 
             if($QueryResults == false)
             {
-                throw new DatabaseException($Query, $this->spamProtection->getDatabase()->error);
+                throw new DatabaseException($Query, $this->spamProtection->getDatabase("IVDatabase")->error);
             }
             else
             {
