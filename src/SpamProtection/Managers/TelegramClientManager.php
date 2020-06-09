@@ -5,6 +5,7 @@
 
 
     use msqg\QueryBuilder;
+    use SpamProtection\Abstracts\TelegramChatType;
     use SpamProtection\Abstracts\TelegramClientSearchMethod;
     use SpamProtection\Exceptions\DatabaseException;
     use SpamProtection\Exceptions\InvalidSearchMethod;
@@ -106,6 +107,28 @@
             }
 
             return $this->getClient(TelegramClientSearchMethod::byPublicId, $PublicID);
+        }
+
+        /**
+         * Registers the client as a user only (private)
+         *
+         * @param User $user
+         * @return TelegramClient
+         * @throws DatabaseException
+         * @throws InvalidSearchMethod
+         * @throws TelegramClientNotFoundException
+         */
+        public function registerUser(User $user): TelegramClient
+        {
+            $ChatObject = new Chat();
+            $ChatObject->ID = $user->ID;
+            $ChatObject->Type = TelegramChatType::Private;
+            $ChatObject->Title = null;
+            $ChatObject->Username = $user->Username;
+            $ChatObject->FirstName = $user->FirstName;
+            $ChatObject->LastName = $user->LastName;
+
+            return $this->registerClient($ChatObject, $user);
         }
 
         /**
