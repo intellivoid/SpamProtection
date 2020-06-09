@@ -13,6 +13,7 @@
     use SpamProtection\Objects\TelegramClient\Chat;
     use SpamProtection\Objects\TelegramClient\User;
     use SpamProtection\SpamProtection;
+    use SpamProtection\Utilities\Hashing;
     use ZiProto\ZiProto;
 
     /**
@@ -35,6 +36,16 @@
             $this->spamProtection = $spamProtection;
         }
 
+        /**
+         * Registers a client into the database
+         *
+         * @param Chat $chat
+         * @param User $user
+         * @return TelegramClient
+         * @throws DatabaseException
+         * @throws InvalidSearchMethod
+         * @throws TelegramClientNotFoundException
+         */
         public function registerClient(Chat $chat, User $user): TelegramClient
         {
             $CurrentTime = (int)time();
@@ -63,14 +74,14 @@
             $Available = (int)true;
             $AccountID = 0;
             $User = ZiProto::encode($user->toArray());
-            $User = $this->intellivoidAccounts->database->real_escape_string($User);
+            $User = $this->spamProtection->getDatabase("IVDatabase")->real_escape_string($User);
             $Chat = ZiProto::encode($chat->toArray());
-            $Chat = $this->intellivoidAccounts->database->real_escape_string($Chat);
+            $Chat = $this->spamProtection->getDatabase("IVDatabase")->real_escape_string($Chat);
             $SessionData = new TelegramClient\SessionData();
             $SessionData = ZiProto::encode($SessionData->toArray());
-            $SessionData = $this->intellivoidAccounts->database->real_escape_string($SessionData);
-            $ChatID = $this->intellivoidAccounts->database->real_escape_string($chat->ID);
-            $UserID = $this->intellivoidAccounts->database->real_escape_string($user->ID);
+            $SessionData = $this->spamProtection->getDatabase("IVDatabase")->real_escape_string($SessionData);
+            $ChatID = $this->spamProtection->getDatabase("IVDatabase")->real_escape_string($chat->ID);
+            $UserID = $this->spamProtection->getDatabase("IVDatabase")->real_escape_string($user->ID);
             $LastActivity = $CurrentTime;
             $Created = $CurrentTime;
 
@@ -88,10 +99,10 @@
                 )
             );
 
-            $QueryResults = $this->intellivoidAccounts->database->query($Query);
+            $QueryResults = $this->spamProtection->getDatabase("IVDatabase")->query($Query);
             if($QueryResults == false)
             {
-                throw new DatabaseException($Query, $this->intellivoidAccounts->database->error);
+                throw new DatabaseException($Query, $this->spamProtection->getDatabase("IVDatabase")->error);
             }
 
             return $this->getClient(TelegramClientSearchMethod::byPublicId, $PublicID);
