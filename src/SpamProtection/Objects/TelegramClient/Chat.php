@@ -4,6 +4,12 @@
     namespace SpamProtection\Objects\TelegramClient;
 
 
+    use SpamProtection\Abstracts\TelegramChatType;
+
+    /**
+     * Class Chat
+     * @package SpamProtection\Objects\TelegramClient
+     */
     class Chat
     {
         /**
