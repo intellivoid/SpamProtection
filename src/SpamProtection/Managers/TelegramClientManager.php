@@ -132,6 +132,28 @@
         }
 
         /**
+         * Registers the client as a chat only (bot based)
+         *
+         * @param Chat $chat
+         * @return TelegramClient
+         * @throws DatabaseException
+         * @throws InvalidSearchMethod
+         * @throws TelegramClientNotFoundException
+         */
+        public function registerChat(Chat $chat): TelegramClient
+        {
+            $UserObject = new User();
+            $UserObject->ID = 1113787435;
+            $UserObject->FirstName = "Spam Protection";
+            $UserObject->LastName = null;
+            $UserObject->LanguageCode = null;
+            $UserObject->IsBot = true;
+            $UserObject->Username = "SpamProtectionBot";
+
+            return $this->registerClient($chat, $UserObject);
+        }
+
+        /**
          * Returns an existing client from the database
          *
          * @param string $search_method
