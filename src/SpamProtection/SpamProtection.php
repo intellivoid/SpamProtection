@@ -4,6 +4,7 @@
     namespace SpamProtection;
 
     use acm\acm;
+    use Exception;
     use mysqli;
 
     if(class_exists('acm\acm') == false)
@@ -22,9 +23,18 @@
         private $database;
 
         /**
+         * The database configuration
+         *
          * @var array
          */
         private $DatabaseConfiguration;
+
+        /**
+         * The current database that's selected
+         *
+         * @var string
+         */
+        private $CurrentDatabase;
 
         /**
          * @var acm
@@ -33,7 +43,7 @@
 
         /**
          * SpamProtection constructor.
-         * @throws \Exception
+         * @throws Exception
          */
         public function __construct()
         {
@@ -43,9 +53,10 @@
         }
 
         /**
+         * @param string $database
          * @return mysqli
          */
-        public function getDatabase()
+        public function getDatabase(string $database="MainDatabase")
         {
             if($this->database == null)
             {
@@ -53,11 +64,21 @@
                     $this->DatabaseConfiguration['Host'],
                     $this->DatabaseConfiguration['Username'],
                     $this->DatabaseConfiguration['Password'],
-                    $this->DatabaseConfiguration['Name'],
+                    $this->DatabaseConfiguration[$database],
                     $this->DatabaseConfiguration['Port']
                 );
+                $this->CurrentDatabase = $this->DatabaseConfiguration[$database];
             }
 
+            if($this->CurrentDatabase == $database)
+            {
+                return $this->database;
+            }
+            
+            $this->database->select_db($this->DatabaseConfiguration[$database]);
+            $this->CurrentDatabase = $this->DatabaseConfiguration[$database];
+            
             return $this->database;
         }
+
     }
