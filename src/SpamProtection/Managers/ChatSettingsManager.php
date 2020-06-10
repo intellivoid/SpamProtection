@@ -25,4 +25,6 @@
         {
             $this->spamProtection = $spamProtection;
         }
+
+
     }
