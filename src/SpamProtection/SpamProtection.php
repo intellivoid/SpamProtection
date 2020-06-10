@@ -6,6 +6,7 @@
     use acm\acm;
     use Exception;
     use mysqli;
+    use SpamProtection\Managers\TelegramClientManager;
 
     include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Abstracts' . DIRECTORY_SEPARATOR . 'TelegramChatType.php');
     include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Abstracts' . DIRECTORY_SEPARATOR . 'TelegramClientSearchMethod.php');
@@ -72,6 +73,11 @@
         private $acm;
 
         /**
+         * @var TelegramClientManager
+         */
+        private $TelegramClientManager;
+
+        /**
          * SpamProtection constructor.
          * @throws Exception
          */
@@ -80,6 +86,8 @@
             $this->acm = new acm(__DIR__, 'SpamProtection');
             $this->DatabaseConfiguration = $this->acm->getConfiguration('Database');
             $this->database = null;
+            
+            $this->TelegramClientManager = new TelegramClientManager($this);
         }
 
         /**
@@ -109,6 +117,14 @@
             $this->CurrentDatabase = $this->DatabaseConfiguration[$database];
             
             return $this->database;
+        }
+
+        /**
+         * @return TelegramClientManager
+         */
+        public function getTelegramClientManager(): TelegramClientManager
+        {
+            return $this->TelegramClientManager;
         }
 
     }
