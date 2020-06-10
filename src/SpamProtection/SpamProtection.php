@@ -7,6 +7,7 @@
     use Exception;
     use mysqli;
     use SpamProtection\Managers\ChatSettingsManager;
+    use SpamProtection\Managers\MessageLogManager;
     use SpamProtection\Managers\TelegramClientManager;
 
     include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Abstracts' . DIRECTORY_SEPARATOR . 'DetectionAction.php');
@@ -27,6 +28,7 @@
     include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Objects' . DIRECTORY_SEPARATOR . 'UserStatus.php');
 
     include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Managers' . DIRECTORY_SEPARATOR . 'ChatSettingsManager.php');
+    include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Managers' . DIRECTORY_SEPARATOR . 'MessageLogManager.php');
     include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Managers' . DIRECTORY_SEPARATOR . 'TelegramClientManager.php');
 
     include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Utilities' . DIRECTORY_SEPARATOR . 'Hashing.php');
@@ -90,6 +92,11 @@
         private $ChatSettingsManager;
 
         /**
+         * @var MessageLogManager
+         */
+        private $MessageLogManager;
+
+        /**
          * SpamProtection constructor.
          * @throws Exception
          */
@@ -101,6 +108,7 @@
             
             $this->TelegramClientManager = new TelegramClientManager($this);
             $this->ChatSettingsManager = new ChatSettingsManager($this);
+            $this->MessageLogManager = new MessageLogManager($this);
         }
 
         /**
@@ -146,6 +154,14 @@
         public function getChatSettingsManager(): ChatSettingsManager
         {
             return $this->ChatSettingsManager;
+        }
+
+        /**
+         * @return MessageLogManager
+         */
+        public function getMessageLogManager(): MessageLogManager
+        {
+            return $this->MessageLogManager;
         }
 
     }
