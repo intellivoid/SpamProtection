@@ -22,4 +22,22 @@
 
             return $builder;
         }
+
+        /**
+         * Generates a unique hash of the message ID
+         *
+         * @param int $message_id
+         * @param int $chat_id
+         * @param int $user_id
+         * @param int $timestamp
+         * @param string $message_content_hash
+         * @return string
+         */
+        public static function messageHash(int $message_id, int $chat_id, int $user_id, int $timestamp, string $message_content_hash): string
+        {
+            $combination = self::telegramClientPublicID($chat_id, $user_id);
+            $message = hash('crc32b', $message_id . $message_content_hash);
+
+            return hash('sha256', $combination . $message . $timestamp);
+        }
     }
