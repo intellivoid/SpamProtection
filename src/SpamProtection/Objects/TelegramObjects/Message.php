@@ -7,6 +7,10 @@
     use SpamProtection\Objects\TelegramClient\Chat;
     use SpamProtection\Objects\TelegramClient\User;
 
+    /**
+     * Class Message
+     * @package SpamProtection\Objects\TelegramObjects
+     */
     class Message
     {
         /**
