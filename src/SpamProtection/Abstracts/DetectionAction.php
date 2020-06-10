@@ -10,6 +10,8 @@
      */
     abstract class DetectionAction
     {
+        const Nothing = "NOTHING";
+
         const DeleteMessage = "DELETE";
 
         const KickOffender = "KICK_OFFENDER";
