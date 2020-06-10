@@ -6,6 +6,7 @@
     use acm\acm;
     use Exception;
     use mysqli;
+    use SpamProtection\Managers\ChatSettingsManager;
     use SpamProtection\Managers\TelegramClientManager;
 
     include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Abstracts' . DIRECTORY_SEPARATOR . 'TelegramChatType.php');
@@ -20,6 +21,7 @@
     include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Objects' . DIRECTORY_SEPARATOR . 'TelegramClient' . DIRECTORY_SEPARATOR . 'User.php');
     include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Objects' . DIRECTORY_SEPARATOR . 'TelegramClient.php');
 
+    include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Managers' . DIRECTORY_SEPARATOR . 'ChatSettingsManager.php');
     include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Managers' . DIRECTORY_SEPARATOR . 'TelegramClientManager.php');
 
     include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Utilities' . DIRECTORY_SEPARATOR . 'Hashing.php');
@@ -78,6 +80,11 @@
         private $TelegramClientManager;
 
         /**
+         * @var ChatSettingsManager
+         */
+        private $ChatSettingsManager;
+
+        /**
          * SpamProtection constructor.
          * @throws Exception
          */
@@ -88,6 +95,7 @@
             $this->database = null;
             
             $this->TelegramClientManager = new TelegramClientManager($this);
+            $this->ChatSettingsManager = new ChatSettingsManager($this);
         }
 
         /**
@@ -125,6 +133,14 @@
         public function getTelegramClientManager(): TelegramClientManager
         {
             return $this->TelegramClientManager;
+        }
+
+        /**
+         * @return ChatSettingsManager
+         */
+        public function getChatSettingsManager(): ChatSettingsManager
+        {
+            return $this->ChatSettingsManager;
         }
 
     }
