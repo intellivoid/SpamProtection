@@ -6,9 +6,10 @@
     use acm\acm;
     use Exception;
     use mysqli;
-    use SpamProtection\Managers\ChatSettingsManager;
+    use SpamProtection\Managers\SettingsManager;
     use SpamProtection\Managers\MessageLogManager;
     use SpamProtection\Managers\TelegramClientManager;
+    use SpamProtection\Objects\ChatSettings;
 
     include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Abstracts' . DIRECTORY_SEPARATOR . 'DetectionAction.php');
     include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Abstracts' . DIRECTORY_SEPARATOR . 'TelegramChatType.php');
@@ -29,7 +30,7 @@
     include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Objects' . DIRECTORY_SEPARATOR . 'TelegramClient.php');
     include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Objects' . DIRECTORY_SEPARATOR . 'UserStatus.php');
 
-    include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Managers' . DIRECTORY_SEPARATOR . 'ChatSettingsManager.php');
+    include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Managers' . DIRECTORY_SEPARATOR . 'SettingsManager.php');
     include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Managers' . DIRECTORY_SEPARATOR . 'MessageLogManager.php');
     include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Managers' . DIRECTORY_SEPARATOR . 'TelegramClientManager.php');
 
@@ -89,7 +90,7 @@
         private $TelegramClientManager;
 
         /**
-         * @var ChatSettingsManager
+         * @var SettingsManager
          */
         private $ChatSettingsManager;
 
@@ -97,6 +98,11 @@
          * @var MessageLogManager
          */
         private $MessageLogManager;
+
+        /**
+         * @var SettingsManager
+         */
+        private $SettingsManager;
 
         /**
          * SpamProtection constructor.
@@ -109,8 +115,9 @@
             $this->database = null;
             
             $this->TelegramClientManager = new TelegramClientManager($this);
-            $this->ChatSettingsManager = new ChatSettingsManager($this);
+            $this->ChatSettingsManager = new SettingsManager($this);
             $this->MessageLogManager = new MessageLogManager($this);
+            $this->SettingsManager = new SettingsManager($this);
         }
 
         /**
@@ -151,9 +158,9 @@
         }
 
         /**
-         * @return ChatSettingsManager
+         * @return SettingsManager
          */
-        public function getChatSettingsManager(): ChatSettingsManager
+        public function getChatSettingsManager(): SettingsManager
         {
             return $this->ChatSettingsManager;
         }
@@ -164,6 +171,14 @@
         public function getMessageLogManager(): MessageLogManager
         {
             return $this->MessageLogManager;
+        }
+
+        /**
+         * @return SettingsManager
+         */
+        public function getSettingsManager(): SettingsManager
+        {
+            return $this->SettingsManager;
         }
 
     }

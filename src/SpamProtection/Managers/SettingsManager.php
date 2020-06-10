@@ -12,7 +12,7 @@
      * Class ChatSettingsManager
      * @package SpamProtection\Managers
      */
-    class ChatSettingsManager
+    class SettingsManager
     {
         /**
          * @var SpamProtection
