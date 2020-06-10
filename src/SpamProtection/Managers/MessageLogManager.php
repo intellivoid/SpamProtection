@@ -35,10 +35,14 @@
         }
 
         /**
+         * Registers a message prediction into the database
+         *
          * @param Message $message
          * @param float $spam_prediction
          * @param float $ham_prediction
          * @return MessageLog
+         * @throws DatabaseException
+         * @throws MessageLogNotFoundException
          * @throws UnsupportedMessageException
          */
         public function registerMessage(Message $message, float $spam_prediction, float $ham_prediction): MessageLog
@@ -107,6 +111,15 @@
                 'ham_prediction' => $ham_prediction,
                 'timestamp' => $timestamp
             ));
+
+            $QueryResults = $this->spamProtection->getDatabase("MainDatabase")->query($Query);
+
+            if($QueryResults == false)
+            {
+                throw new DatabaseException($Query, $this->spamProtection->getDatabase("MainDatabase")->error);
+            }
+
+            return $this->getMessage($message_hash);
         }
 
         /**
