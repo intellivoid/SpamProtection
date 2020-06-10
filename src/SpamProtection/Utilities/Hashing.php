@@ -40,4 +40,15 @@
 
             return hash('sha256', $combination . $message . $timestamp);
         }
+
+        /**
+         * Generates a unique hash of the message content
+         *
+         * @param string $content
+         * @return string
+         */
+        public static function messageContent(string $content): string
+        {
+            return hash('sha256', $content . 'IVASP');
+        }
     }
