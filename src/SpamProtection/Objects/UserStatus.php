@@ -120,7 +120,7 @@
          * @param array $data
          * @return UserStatus
          */
-        public function fromArray(User $user, array $data): UserStatus
+        public static function fromArray(User $user, array $data): UserStatus
         {
             $UserStatusObject = new UserStatus();
             $UserStatusObject->User = $user;
