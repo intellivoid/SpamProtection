@@ -6,6 +6,7 @@
 
     use msqg\QueryBuilder;
     use SpamProtection\Exceptions\DatabaseException;
+    use SpamProtection\Exceptions\MessageLogNotFoundException;
     use SpamProtection\Exceptions\UnsupportedMessageException;
     use SpamProtection\Objects\MessageLog;
     use SpamProtection\Objects\TelegramObjects\Message;
@@ -108,6 +109,14 @@
             ));
         }
 
+        /**
+         * Returns an existing message from the database
+         *
+         * @param string $message_hash
+         * @return MessageLog
+         * @throws DatabaseException
+         * @throws MessageLogNotFoundException
+         */
         public function getMessage(string $message_hash): MessageLog
         {
             $message_hash = $this->spamProtection->getDatabase("MainDatabase")->real_escape_string($message_hash);
@@ -139,14 +148,15 @@
             {
                 if($QueryResults->num_rows !== 1)
                 {
-                    throw new ();
+                    throw new MessageLogNotFoundException();
                 }
 
                 $Row = $QueryResults->fetch_array(MYSQLI_ASSOC);
                 $Row['user'] = ZiProto::decode($Row['user']);
                 $Row['chat'] = ZiProto::decode($Row['chat']);
-                $Row['session_data'] = ZiProto::decode($Row['session_data']);
-                return TelegramClient::fromArray($Row);
+                $Row['forward_from'] = ZiProto::decode($Row['forward_from']);
+                $Row['forward_from_chat'] = ZiProto::decode($Row['forward_from_chat']);
+                return MessageLog::fromArray($Row);
             }
         }
     }
