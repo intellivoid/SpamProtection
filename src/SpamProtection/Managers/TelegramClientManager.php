@@ -265,17 +265,9 @@
             $username = null;
             $last_activity = (int)time();
 
-            if((int)$chat_id == (int)$user_id)
+            if($telegramClient->getUsername() !== null)
             {
-                if($telegramClient->User->Username !== null)
-                {
-                    $Username = $this->spamProtection->getDatabase("IVDatabase")->real_escape_string($telegramClient->User->Username);
-                }
-
-                if($telegramClient->Chat->Username !== null)
-                {
-                    $Username = $this->spamProtection->getDatabase("IVDatabase")->real_escape_string($telegramClient->Chat->Username);
-                }
+                $this->spamProtection->getDatabase("IVDatabase")->real_escape_string($telegramClient->getUsername());
             }
 
             $Query = QueryBuilder::update('telegram_clients', array(
