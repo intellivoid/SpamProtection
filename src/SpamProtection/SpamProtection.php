@@ -90,11 +90,6 @@
         private $TelegramClientManager;
 
         /**
-         * @var SettingsManager
-         */
-        private $ChatSettingsManager;
-
-        /**
          * @var MessageLogManager
          */
         private $MessageLogManager;
@@ -115,7 +110,6 @@
             $this->database = null;
             
             $this->TelegramClientManager = new TelegramClientManager($this);
-            $this->ChatSettingsManager = new SettingsManager($this);
             $this->MessageLogManager = new MessageLogManager($this);
             $this->SettingsManager = new SettingsManager($this);
         }
@@ -155,14 +149,6 @@
         public function getTelegramClientManager(): TelegramClientManager
         {
             return $this->TelegramClientManager;
-        }
-
-        /**
-         * @return SettingsManager
-         */
-        public function getChatSettingsManager(): SettingsManager
-        {
-            return $this->ChatSettingsManager;
         }
 
         /**
