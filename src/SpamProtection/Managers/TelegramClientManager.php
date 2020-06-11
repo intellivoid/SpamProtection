@@ -249,6 +249,11 @@
             $session_data = $this->spamProtection->getDatabase("IVDatabase")->real_escape_string($session_data);
             $chat_id = $this->spamProtection->getDatabase("IVDatabase")->real_escape_string($telegramClient->Chat->ID);
             $user_id = $this->spamProtection->getDatabase("IVDatabase")->real_escape_string($telegramClient->User->ID);
+            $username = null;
+            if($telegramClient->User->Username !== null)
+            {
+                $username = $this->spamProtection->getDatabase("IVDatabase")->real_escape_string($telegramClient->User->Username);
+            }
             $last_activity = (int)time();
 
             $Query = QueryBuilder::update('telegram_clients', array(
@@ -259,6 +264,7 @@
                 'session_data' => $session_data,
                 'chat_id' => $chat_id,
                 'user_id' => $user_id,
+                'username' => $username,
                 'last_activity' => $last_activity
             ), 'id', $id);
             $QueryResults = $this->spamProtection->getDatabase("IVDatabase")->query($Query);
