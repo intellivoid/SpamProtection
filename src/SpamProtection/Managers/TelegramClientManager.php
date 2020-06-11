@@ -54,6 +54,11 @@
 
             try
             {
+                if($user->Username !== null)
+                {
+                    $ExistingClient = $this->getClient(TelegramClientSearchMethod::byPublicId, $PublicID);
+                }
+
                 $ExistingClient = $this->getClient(TelegramClientSearchMethod::byPublicId, $PublicID);
 
                 $ExistingClient->LastActivityTimestamp = $CurrentTime;
