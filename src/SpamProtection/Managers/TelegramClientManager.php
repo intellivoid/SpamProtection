@@ -267,7 +267,7 @@
 
             if($telegramClient->getUsername() !== null)
             {
-                $this->spamProtection->getDatabase("IVDatabase")->real_escape_string($telegramClient->getUsername());
+                $username = $this->spamProtection->getDatabase("IVDatabase")->real_escape_string($telegramClient->getUsername());
             }
 
             $Query = QueryBuilder::update('telegram_clients', array(
