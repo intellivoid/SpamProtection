@@ -248,6 +248,7 @@
          * @param TelegramClient $telegramClient
          * @return bool
          * @throws DatabaseException
+         * @throws InvalidSearchMethod
          */
         public function updateClient(TelegramClient $telegramClient): bool
         {
@@ -268,6 +269,7 @@
             if($telegramClient->getUsername() !== null)
             {
                 $username = $this->spamProtection->getDatabase("IVDatabase")->real_escape_string($telegramClient->getUsername());
+                $this->fixDuplicateUsername($telegramClient->Chat, $telegramClient->User);
             }
 
             $Query = QueryBuilder::update('telegram_clients', array(
