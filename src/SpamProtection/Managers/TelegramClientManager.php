@@ -177,7 +177,14 @@
                     $value = (int)$value;
                     break;
 
+                case TelegramClientSearchMethod::byChatId:
+                case TelegramClientSearchMethod::byUserId:
+                    $search_method = $this->spamProtection->getDatabase("IVDatabase")->real_escape_string("byPublicId");
+                    $value = Hashing::telegramClientPublicID((int)$value, (int)$value);
+                    break;
+
                 case TelegramClientSearchMethod::byPublicId:
+                case TelegramClientSearchMethod::byUsername:
                     $search_method = $this->spamProtection->getDatabase("IVDatabase")->real_escape_string($search_method);
                     $value = $this->spamProtection->getDatabase("IVDatabase")->real_escape_string($value);;
                     break;
@@ -196,6 +203,7 @@
                 'session_data',
                 'chat_id',
                 'user_id',
+                'username',
                 'last_activity',
                 'created'
             ], $search_method, $value);
