@@ -192,7 +192,7 @@
 
                 case TelegramClientSearchMethod::byChatId:
                 case TelegramClientSearchMethod::byUserId:
-                    $search_method = $this->spamProtection->getDatabase("IVDatabase")->real_escape_string("byPublicId");
+                    $search_method = $this->spamProtection->getDatabase("IVDatabase")->real_escape_string("public_id");
                     $value = Hashing::telegramClientPublicID((int)$value, (int)$value);
                     break;
 
