@@ -1,5 +1,7 @@
 <?php
 
+    /** @noinspection PhpUndefinedClassInspection */
+
 
     namespace SpamProtection;
 
@@ -7,6 +9,7 @@
     use Exception;
     use mysqli;
     use SpamProtection\Managers\MessageLogManager;
+    use TelegramClientManager\TelegramClientManager;
 
     include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Abstracts' . DIRECTORY_SEPARATOR . 'BlacklistFlag.php');
     include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Abstracts' . DIRECTORY_SEPARATOR . 'DetectionAction.php');
@@ -34,6 +37,11 @@
     if(class_exists('ZiProto\ZiProto') == false)
     {
         include_once(__DIR__ . DIRECTORY_SEPARATOR . 'ZiProto' . DIRECTORY_SEPARATOR . 'ZiProto.php');
+    }
+
+    if(class_exists('TelegramClientManager\TelegramClientManager') == false)
+    {
+        include_once(__DIR__ . DIRECTORY_SEPARATOR . 'TelegramClientManager' . DIRECTORY_SEPARATOR . 'TelegramClientManager.php');
     }
 
     if(class_exists('acm\acm') == false)
@@ -64,6 +72,7 @@
 
         /**
          * @var acm
+         * @noinspection PhpUndefinedClassInspection
          */
         private $acm;
 
@@ -73,16 +82,23 @@
         private $MessageLogManager;
 
         /**
+         * @var TelegramClientManager
+         */
+        private $TelegramClientManager;
+
+        /**
          * SpamProtection constructor.
          * @throws Exception
          */
         public function __construct()
         {
+            /** @noinspection PhpUndefinedClassInspection */
             $this->acm = new acm(__DIR__, 'SpamProtection');
             $this->DatabaseConfiguration = $this->acm->getConfiguration('Database');
             $this->database = null;
 
             $this->MessageLogManager = new MessageLogManager($this);
+            $this->TelegramClientManager = null;
         }
 
         /**
@@ -111,6 +127,20 @@
         public function getMessageLogManager(): MessageLogManager
         {
             return $this->MessageLogManager;
+        }
+
+        /**
+         * @return TelegramClientManager
+         * @noinspection PhpUnused
+         */
+        public function getTelegramClientManager(): TelegramClientManager
+        {
+            if($this->TelegramClientManager == null)
+            {
+                $this->TelegramClientManager = new TelegramClientManager();
+            }
+
+            return $this->TelegramClientManager;
         }
 
     }
