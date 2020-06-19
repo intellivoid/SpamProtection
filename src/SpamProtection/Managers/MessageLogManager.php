@@ -64,23 +64,23 @@
 
             $message_id = (int)$message->MessageID;
             $chat_id = (int)$message->Chat->ID;
-            $chat = $this->spamProtection->getDatabase("MainDatabase")->real_escape_string(ZiProto::encode($message->Chat->toArray()));
+            $chat = $this->spamProtection->getDatabase()->real_escape_string(ZiProto::encode($message->Chat->toArray()));
             $user_id = (int)$message->From->ID;
-            $user = $this->spamProtection->getDatabase("MainDatabase")->real_escape_string(ZiProto::encode($message->From->toArray()));
-            $forward_from = $this->spamProtection->getDatabase("MainDatabase")->real_escape_string(ZiProto::encode(array()));
-            $forward_from_chat = $this->spamProtection->getDatabase("MainDatabase")->real_escape_string(ZiProto::encode(array()));
+            $user = $this->spamProtection->getDatabase()->real_escape_string(ZiProto::encode($message->From->toArray()));
+            $forward_from = $this->spamProtection->getDatabase()->real_escape_string(ZiProto::encode(array()));
+            $forward_from_chat = $this->spamProtection->getDatabase()->real_escape_string(ZiProto::encode(array()));
             $forward_from_message_id = (int)0;
 
             if($message->ForwardFrom !== null)
             {
-                $forward_from = $this->spamProtection->getDatabase("MainDatabase")->real_escape_string(ZiProto::encode(
+                $forward_from = $this->spamProtection->getDatabase()->real_escape_string(ZiProto::encode(
                     $message->ForwardFrom->toArray()
                 ));
             }
 
             if($message->ForwardFromChat !== null)
             {
-                $forward_from_chat = $this->spamProtection->getDatabase("MainDatabase")->real_escape_string(ZiProto::encode(
+                $forward_from_chat = $this->spamProtection->getDatabase()->real_escape_string(ZiProto::encode(
                     $message->ForwardFromChat->toArray()
                 ));
             }
@@ -91,7 +91,7 @@
             }
 
             $timestamp = (int)time();
-            $content_hash = $this->spamProtection->getDatabase("MainDatabase")->real_escape_string(Hashing::messageContent($message->getText()));
+            $content_hash = $this->spamProtection->getDatabase()->real_escape_string(Hashing::messageContent($message->getText()));
             $message_hash = Hashing::messageHash($message_id, $chat_id, $user_id, $timestamp, $content_hash);
             $spam_prediction = (float)$spam_prediction;
             $ham_prediction = (float)$ham_prediction;
@@ -112,11 +112,11 @@
                 'timestamp' => $timestamp
             ));
 
-            $QueryResults = $this->spamProtection->getDatabase("MainDatabase")->query($Query);
+            $QueryResults = $this->spamProtection->getDatabase()->query($Query);
 
             if($QueryResults == false)
             {
-                throw new DatabaseException($Query, $this->spamProtection->getDatabase("MainDatabase")->error);
+                throw new DatabaseException($Query, $this->spamProtection->getDatabase()->error);
             }
 
             return $this->getMessage($message_hash);
@@ -132,7 +132,7 @@
          */
         public function getMessage(string $message_hash): MessageLog
         {
-            $message_hash = $this->spamProtection->getDatabase("MainDatabase")->real_escape_string($message_hash);
+            $message_hash = $this->spamProtection->getDatabase()->real_escape_string($message_hash);
             
             $Query = QueryBuilder::select('message_logs', array(
                 'id',
@@ -151,11 +151,11 @@
                 'timestamp'
             ), 'message_hash', $message_hash);
 
-            $QueryResults = $this->spamProtection->getDatabase("MainDatabase")->query($Query);
+            $QueryResults = $this->spamProtection->getDatabase()->query($Query);
 
             if($QueryResults == false)
             {
-                throw new DatabaseException($Query, $this->spamProtection->getDatabase("MainDatabase")->error);
+                throw new DatabaseException($Query, $this->spamProtection->getDatabase()->error);
             }
             else
             {

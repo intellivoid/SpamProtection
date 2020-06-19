@@ -15,8 +15,7 @@
     $DatabaseSchema->setDefinition('Port', '3306');
     $DatabaseSchema->setDefinition('Username', 'admin');
     $DatabaseSchema->setDefinition('Password', 'admin');
-    $DatabaseSchema->setDefinition('MainDatabase', 'spam_protection');
-    $DatabaseSchema->setDefinition('IVDatabase', 'intellivoid');
+    $DatabaseSchema->setDefinition('Database', 'spam_protection');
     $acm->defineSchema('Database', $DatabaseSchema);
 
     $acm->processCommandLine();
