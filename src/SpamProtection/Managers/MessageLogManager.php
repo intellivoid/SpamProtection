@@ -1,4 +1,5 @@
 <?php
+    /** @noinspection PhpUndefinedClassInspection */
 
 
     namespace SpamProtection\Managers;
@@ -44,6 +45,7 @@
          * @throws DatabaseException
          * @throws MessageLogNotFoundException
          * @throws UnsupportedMessageException
+         * @noinspection PhpUnused
          */
         public function registerMessage(Message $message, float $spam_prediction, float $ham_prediction): MessageLog
         {
