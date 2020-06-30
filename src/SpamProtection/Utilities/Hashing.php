@@ -43,9 +43,21 @@
             return hash('sha256', $combination . $message . $timestamp);
         }
 
-        public static function messageImageHash(int $message_id, int $chat_id, int $user_id, int $timestamp, PhotoSize $photoSize): string
+        /**
+         * Generates a unique hash of the image message
+         *
+         * @param int $message_id
+         * @param int $chat_id
+         * @param int $user_id
+         * @param int $timestamp
+         * @param string $image_content_hash
+         * @param PhotoSize $photoSize
+         * @return string
+         */
+        public static function messageImageHash(int $message_id, int $chat_id, int $user_id, int $timestamp, string $image_content_hash, PhotoSize $photoSize): string
         {
-
+            $message_hash = self::messageHash($message_id, $chat_id, $user_id, $timestamp, $image_content_hash);
+            return hash('sha256', $message_hash . self::photoSizeHash($photoSize));
         }
 
         /**
