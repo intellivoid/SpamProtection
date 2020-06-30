@@ -4,6 +4,7 @@
     namespace SpamProtection\Utilities;
 
 
+    use SpamProtection\Exceptions\DownloadFileException;
     use SpamProtection\Objects\TelegramObjects\PhotoSize;
 
     class Hashing
@@ -75,12 +76,18 @@
             return hash('sha256', $file_id . $file_unique_id . $size);
         }
 
-        public static function hashRemoteImage(string $url): string
+        /**
+         * Returns the hash of the contents of a remote file
+         *
+         * @param string $url
+         * @return string
+         * @throws DownloadFileException
+         * @noinspection PhpUnused
+         */
+        public static function hashRemoteFile(string $url): string
         {
             $CurlClient = curl_init();
-            curl_setopt($CurlClient, CURLOPT_URL, $InterfaceConnection->generateAddress(false) . $path);
-            curl_setopt($CurlClient, CURLOPT_POST, 1);
-            curl_setopt($CurlClient, CURLOPT_POSTFIELDS, http_build_query($parameters));
+            curl_setopt($CurlClient, CURLOPT_URL, $url);
             curl_setopt($CurlClient, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($CurlClient, CURLOPT_FAILONERROR, true);
 
@@ -91,12 +98,11 @@
                 $error_response = curl_error($CurlClient);
                 curl_close($CurlClient);
 
-                throw new ServerInterfaceException(
-                    $error_response, $InterfaceConnection->generateAddress(false) . $path, $parameters);
+                throw new DownloadFileException($error_response, $url);
             }
 
             curl_close($CurlClient);
-            return $response;
+            return hash('sha256', $response);
         }
 
         /**
