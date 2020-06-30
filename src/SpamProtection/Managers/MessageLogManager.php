@@ -137,7 +137,7 @@
             $timestamp = (int)time();
             $content_hash = $this->spamProtection->getDatabase()->real_escape_string(Hashing::messageContent($message->getText()));
             $photo_size = $this->spamProtection->getDatabase()->real_escape_string(ZiProto::encode(
-                PhotoSize::fromArray(array())
+                PhotoSize::fromArray(array())->toArray()
             ));
             $message_hash = Hashing::messageHash($message_id, $chat_id, $user_id, $timestamp, $content_hash);
             $spam_prediction = (float)$spam_prediction;
