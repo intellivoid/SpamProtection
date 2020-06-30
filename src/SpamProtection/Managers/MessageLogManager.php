@@ -47,6 +47,7 @@
          * @throws DownloadFileException
          * @throws MessageLogNotFoundException
          * @throws UnsupportedMessageException
+         * @noinspection PhpUnused
          */
         public function registerMessages(Message $message, float $spam_prediction, float $ham_prediction): array
         {
