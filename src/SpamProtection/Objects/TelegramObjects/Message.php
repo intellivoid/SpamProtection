@@ -144,6 +144,28 @@
         }
 
         /**
+         * Returns an array of the photo size
+         *
+         * @return array
+         */
+        public function photosToArray(): array
+        {
+            if($this->Photo !== null)
+            {
+                $Results = [];
+
+                foreach($this->Photo as $photoSize)
+                {
+                    $Results[] = $photoSize->toArray();
+                }
+
+                return $Results;
+            }
+
+            return [];
+        }
+
+        /**
          * Determines if this message was forwarded
          *
          * @return bool

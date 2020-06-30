@@ -43,6 +43,13 @@
         public $FileSize;
 
         /**
+         * Direct URL for obtaining the file to this photo
+         *
+         * @var string|null
+         */
+        public $URL;
+
+        /**
          * Returns an array which represents this object.
          *
          * @return array
@@ -54,7 +61,8 @@
                 'file_unique_id' => (string)$this->FileUniqueID,
                 'width' => (int)$this->Width,
                 'height' => (int)$this->Height,
-                'file_size' => $this->FileSize
+                'file_size' => $this->FileSize,
+                'url' => $this->URL
             );
         }
 
@@ -91,6 +99,11 @@
             if(isset($data['file_size']))
             {
                 $PhotoSizeObject->FileSize = (int)$data['file_size'];
+            }
+
+            if(isset($data['url']))
+            {
+                $PhotoSizeObject->URL = $data['url'];
             }
 
             return $PhotoSizeObject;
