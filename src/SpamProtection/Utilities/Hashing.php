@@ -4,6 +4,8 @@
     namespace SpamProtection\Utilities;
 
 
+    use SpamProtection\Objects\TelegramObjects\PhotoSize;
+
     class Hashing
     {
         /**
@@ -39,6 +41,26 @@
             $message = hash('crc32b', $message_id . $message_content_hash);
 
             return hash('sha256', $combination . $message . $timestamp);
+        }
+
+        public static function messageImageHash(int $message_id, int $chat_id, int $user_id, int $timestamp, PhotoSize $photoSize): string
+        {
+
+        }
+
+        /**
+         * Calculates the hash for a PhotoSize
+         *
+         * @param PhotoSize $photoSize
+         * @return string
+         */
+        public static function photoSizeHash(PhotoSize $photoSize): string
+        {
+            $file_id = hash('sha256', $photoSize->FileID);
+            $file_unique_id = hash('sha256', $photoSize->FileUniqueID);
+            $size = hash('sha256', $photoSize->Width . $photoSize->Height);
+
+            return hash('sha256', $file_id . $file_unique_id . $size);
         }
 
         /**
