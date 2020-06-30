@@ -1,7 +1,7 @@
 create table if not exists spam_protection.image_logs
 (
     id                      int(255) auto_increment comment 'The unique internal database ID of this record',
-    image_hash              varchar(256) null comment 'The hash of the image',
+    message_hash            varchar(256) null comment 'The hash of the message',
     message_id              int(255)     null comment 'The ID of the message sent in the chat',
     file_id                 varchar(256) null comment 'Identifier for this file, which can be used to download or reuse the file',
     file_unique_id          varchar(256) null comment 'Unique identifier for this file, which is supposed to be the same over time and for different bots. Can''t be used to download or reuse the file.',
@@ -22,7 +22,7 @@ create table if not exists spam_protection.image_logs
     constraint image_logs_file_unique_id_uindex unique (file_unique_id),
     constraint image_logs_id_uindex unique (id),
     constraint image_logs_content_hash_uindex unique (content_hash),
-    constraint image_logs_image_hash_uindex unique (image_hash)
+    constraint image_logs_message_hash_uindex unique (message_hash)
 ) comment 'Table of image hashes';
 
 alter table spam_protection.image_logs add primary key (id);
