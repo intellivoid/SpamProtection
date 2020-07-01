@@ -272,6 +272,7 @@
                 'id',
                 'message_hash',
                 'message_id',
+                'photo_size',
                 'chat_id',
                 'chat',
                 'user_id',
@@ -299,6 +300,7 @@
                 }
 
                 $Row = $QueryResults->fetch_array(MYSQLI_ASSOC);
+                $Row['photo_size'] = ZiProto::decode($Row['photo_size']);
                 $Row['user'] = ZiProto::decode($Row['user']);
                 $Row['chat'] = ZiProto::decode($Row['chat']);
                 $Row['forward_from'] = ZiProto::decode($Row['forward_from']);
