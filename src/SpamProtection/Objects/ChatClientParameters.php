@@ -58,6 +58,7 @@
          *
          * @param array $data
          * @return ChatClientParameters
+         * @noinspection DuplicatedCode
          */
         public static function fromArray(array $data): ChatClientParameters
         {

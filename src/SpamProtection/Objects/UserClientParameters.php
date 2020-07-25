@@ -105,6 +105,7 @@
          *
          * @param array $data
          * @return UserClientParameters
+         * @noinspection DuplicatedCode
          */
         public static function fromArray(array $data): UserClientParameters
         {
