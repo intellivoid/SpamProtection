@@ -87,16 +87,16 @@
         public function toArray(): array
         {
             return array(
-                "is_contact" => (bool)$this->IsContact,
-                "is_mutual_contact" => (bool)$this->IsMutualContact,
-                "is_deleted" => (bool)$this->IsDeleted,
-                "is_verified" => (bool)$this->IsVerified,
-                "is_restricted" => (bool)$this->IsRestricted,
-                "is_scam" => (bool)$this->IsScam,
-                "is_support" => (bool)$this->IsSupport,
+                "is_contact" => $this->IsContact,
+                "is_mutual_contact" => $this->IsMutualContact,
+                "is_deleted" => $this->IsDeleted,
+                "is_verified" => $this->IsVerified,
+                "is_restricted" => $this->IsRestricted,
+                "is_scam" => $this->IsScam,
+                "is_support" => $this->IsSupport,
                 "phone_number" => $this->PhoneNumber,
-                "data_center_id" => (int)$this->DataCenterID,
-                "last_updated" => (int)$this->LastUpdated
+                "data_center_id" => $this->DataCenterID,
+                "last_updated" => $this->LastUpdated
             );
         }
 
@@ -113,37 +113,37 @@
 
             if(isset($data["is_contact"]))
             {
-                $UserClientParametersObject->IsContact = (bool)$data["is_contact"];
+                $UserClientParametersObject->IsContact = $data["is_contact"];
             }
 
             if(isset($data["is_mutual_contact"]))
             {
-                $UserClientParametersObject->IsMutualContact = (bool)$data["is_mutual_contact"];
+                $UserClientParametersObject->IsMutualContact = $data["is_mutual_contact"];
             }
 
             if(isset($data["is_deleted"]))
             {
-                $UserClientParametersObject->IsDeleted = (bool)$data["is_deleted"];
+                $UserClientParametersObject->IsDeleted = $data["is_deleted"];
             }
 
             if(isset($data["is_verified"]))
             {
-                $UserClientParametersObject->IsVerified = (bool)$data["is_verified"];
+                $UserClientParametersObject->IsVerified = $data["is_verified"];
             }
 
             if(isset($data["is_restricted"]))
             {
-                $UserClientParametersObject->IsRestricted = (bool)$data["is_restricted"];
+                $UserClientParametersObject->IsRestricted = $data["is_restricted"];
             }
 
             if(isset($data["is_scam"]))
             {
-                $UserClientParametersObject->IsScam = (bool)$data["is_scam"];
+                $UserClientParametersObject->IsScam = $data["is_scam"];
             }
 
             if(isset($data["is_support"]))
             {
-                $UserClientParametersObject->IsSupport = (bool)$data["is_support"];
+                $UserClientParametersObject->IsSupport = $data["is_support"];
             }
 
             if(isset($data["phone_number"]))
@@ -153,12 +153,12 @@
 
             if(isset($data["data_center_id"]))
             {
-                $UserClientParametersObject->DataCenterID = (int)$data["data_center_id"];
+                $UserClientParametersObject->DataCenterID = $data["data_center_id"];
             }
 
             if(isset($data["last_updated"]))
             {
-                $UserClientParametersObject->LastUpdated = (int)$data["last_updated"];
+                $UserClientParametersObject->LastUpdated = $data["last_updated"];
             }
 
             return $UserClientParametersObject;

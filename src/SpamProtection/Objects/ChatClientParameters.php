@@ -46,10 +46,10 @@
         public function toArray()
         {
             return array(
-                "is_verified" => (bool)$this->IsVerified,
-                "is_restricted" => (bool)$this->IsRestricted,
-                "is_scam" => (bool)$this->IsScam,
-                "last_updated" => (int)$this->LastUpdated
+                "is_verified" => $this->IsVerified,
+                "is_restricted" => $this->IsRestricted,
+                "is_scam" => $this->IsScam,
+                "last_updated" => $this->LastUpdated
             );
         }
 
@@ -66,22 +66,22 @@
 
             if(isset($data["is_verified"]))
             {
-                $ChatClientParametersObject->IsVerified = (bool)$data["is_verified"];
+                $ChatClientParametersObject->IsVerified = $data["is_verified"];
             }
 
             if(isset($data["is_restricted"]))
             {
-                $ChatClientParametersObject->IsRestricted = (bool)$data["is_restricted"];
+                $ChatClientParametersObject->IsRestricted = $data["is_restricted"];
             }
 
             if(isset($data["is_scam"]))
             {
-                $ChatClientParametersObject->IsScam = (bool)$data["is_scam"];
+                $ChatClientParametersObject->IsScam = $data["is_scam"];
             }
 
             if(isset($data["last_updated"]))
             {
-                $ChatClientParametersObject->LastUpdated = (int)$data["last_updated"];
+                $ChatClientParametersObject->LastUpdated = $data["last_updated"];
             }
 
             return $ChatClientParametersObject;
