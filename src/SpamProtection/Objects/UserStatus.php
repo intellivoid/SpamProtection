@@ -92,6 +92,8 @@
          */
         public $OperatorNote;
 
+        public $ClientParameters;
+
         /**
          * Returns a configuration array of the user stats
          *
