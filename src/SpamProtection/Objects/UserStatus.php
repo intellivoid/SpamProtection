@@ -121,6 +121,21 @@
         public $LargeLanguageGeneralizedID;
 
         /**
+         * Resets the trust prediction of this user
+         *
+         * @return bool
+         * @noinspection PhpUnused
+         */
+        public function resetTrustPrediction(): bool
+        {
+            $this->GeneralizedID = "None";
+            $this->GeneralizedHam = 0;
+            $this->GeneralizedSpam = 0;
+
+            return true;
+        }
+
+        /**
          * Returns a configuration array of the user stats
          *
          * @return array
