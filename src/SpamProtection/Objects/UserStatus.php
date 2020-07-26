@@ -159,6 +159,7 @@
          * @param bool $whitelisted
          * @return bool
          * @throws PropertyConflictedException
+         * @noinspection PhpUnused
          */
         public function updateWhitelist(bool $whitelisted): bool
         {
@@ -193,6 +194,21 @@
          */
         public function updateBlacklist(string $blacklist_flag, string $original_private_id=null): bool
         {
+            if($this->IsWhitelisted)
+            {
+                throw new PropertyConflictedException("This whitelisted user cannot be blacklisted, remove the whitelist first.");
+            }
+
+            if($this->IsAgent)
+            {
+                throw new PropertyConflictedException("You can't blacklist a agent");
+            }
+
+            if($this->IsOperator)
+            {
+                throw new PropertyConflictedException("You can't blacklist a operator");
+            }
+
             // Auto-capitalize the flag
             $blacklist_flag = strtoupper($blacklist_flag);
             $blacklist_flag = str_replace("0X", "0x", $blacklist_flag);
@@ -216,22 +232,12 @@
                 case BlacklistFlag::Impersonator:
                 case BlacklistFlag::MassAdding:
                 case BlacklistFlag::NameSpam:
-                    if($this->IsWhitelisted)
-                    {
-                        throw new PropertyConflictedException("This whitelisted user cannot be blacklisted, remove the whitelist first.");
-                    }
-
                     $this->IsBlacklisted = true;
                     $this->BlacklistFlag = $blacklist_flag;
                     $this->OriginalPrivateID = null;
                     break;
 
                 case BlacklistFlag::BanEvade:
-                    if($this->IsWhitelisted)
-                    {
-                        throw new PropertyConflictedException("This whitelisted user cannot be blacklisted, remove the whitelist first.");
-                    }
-
                     if($original_private_id == null)
                     {
                         throw new MissingOriginalPrivateIdException();
