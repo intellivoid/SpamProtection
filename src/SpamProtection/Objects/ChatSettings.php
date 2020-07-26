@@ -124,6 +124,13 @@
         public $LastMessageID;
 
         /**
+         * Chat client parameters obtained from an agent
+         *
+         * @var ChatClientParameters
+         */
+        public $ChatClientParameters;
+
+        /**
          * Constructs the configuration array for this object
          *
          * @return array
@@ -150,6 +157,7 @@
                 '0x009' => (int)$this->BanActiveSpammer,
                 '0x010' => (int)$this->DeleteOlderMessages,
                 '0x011' => $this->LastMessageID,
+                '0x012' => $this->ChatClientParameters->toArray(),
                 'Ax000' => $AdminResults,
                 'Ax001' => (int)$this->AdminCacheLastUpdated
             );
@@ -273,6 +281,15 @@
             else
             {
                 $ChatSettingsObject->LastMessageID = null;
+            }
+
+            if(isset($data['0x012']))
+            {
+                $ChatSettingsObject->ChatClientParameters = ChatClientParameters::fromArray($data['0x012']);
+            }
+            else
+            {
+                $ChatSettingsObject->ChatClientParameters = new ChatClientParameters();
             }
 
             $ChatSettingsObject->Administrators = array();
