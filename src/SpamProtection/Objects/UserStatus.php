@@ -136,6 +136,21 @@
         }
 
         /**
+         * Resets the language prediction of the user
+         *
+         * @return bool
+         * @noinspection PhpUnused
+         */
+        public function resetLanguagePrediction(): bool
+        {
+            $this->GeneralizedLanguage = "Unknown";
+            $this->GeneralizedLanguageProbability = 0;
+            $this->GeneralizedID = null;
+
+            return true;
+        }
+
+        /**
          * Returns a configuration array of the user stats
          *
          * @return array
