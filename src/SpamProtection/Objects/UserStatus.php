@@ -5,6 +5,8 @@
 
 
     use SpamProtection\Abstracts\BlacklistFlag;
+    use SpamProtection\Exceptions\InvalidBlacklistFlagException;
+    use SpamProtection\Exceptions\MissingOriginalPrivateIdException;
     use SpamProtection\Exceptions\PropertyConflictedException;
     use TelegramClientManager\Objects\TelegramClient\User;
 
@@ -176,6 +178,76 @@
                 $this->IsWhitelisted = false;
                 return true;
             }
+        }
+
+        /**
+         * Updates the blacklist flag of the user
+         *
+         * @param string $blacklist_flag
+         * @param string|null $original_private_id
+         * @return bool
+         * @throws InvalidBlacklistFlagException
+         * @throws MissingOriginalPrivateIdException
+         * @throws PropertyConflictedException
+         * @noinspection PhpUnused
+         */
+        public function updateBlacklist(string $blacklist_flag, string $original_private_id=null): bool
+        {
+            // Auto-capitalize the flag
+            $blacklist_flag = strtoupper($blacklist_flag);
+            $blacklist_flag = str_replace("0X", "0x", $blacklist_flag);
+
+            switch($blacklist_flag)
+            {
+                case BlacklistFlag::None:
+                    $this->IsBlacklisted = false;
+                    $this->BlacklistFlag = $blacklist_flag;
+                    $this->OriginalPrivateID = null;
+                    break;
+
+                case BlacklistFlag::Special:
+                case BlacklistFlag::Spam:
+                case BlacklistFlag::PornographicSpam:
+                case BlacklistFlag::PrivateSpam:
+                case BlacklistFlag::PiracySpam:
+                case BlacklistFlag::ChildAbuse:
+                case BlacklistFlag::Raid:
+                case BlacklistFlag::Scam:
+                case BlacklistFlag::Impersonator:
+                case BlacklistFlag::MassAdding:
+                case BlacklistFlag::NameSpam:
+                    if($this->IsWhitelisted)
+                    {
+                        throw new PropertyConflictedException("This whitelisted user cannot be blacklisted, remove the whitelist first.");
+                    }
+
+                    $this->IsBlacklisted = true;
+                    $this->BlacklistFlag = $blacklist_flag;
+                    $this->OriginalPrivateID = null;
+                    break;
+
+                case BlacklistFlag::BanEvade:
+                    if($this->IsWhitelisted)
+                    {
+                        throw new PropertyConflictedException("This whitelisted user cannot be blacklisted, remove the whitelist first.");
+                    }
+
+                    if($original_private_id == null)
+                    {
+                        throw new MissingOriginalPrivateIdException();
+                    }
+
+                    $this->IsBlacklisted = true;
+                    $this->BlacklistFlag = $blacklist_flag;
+                    $this->OriginalPrivateID = $original_private_id;
+                    break;
+
+                default:
+                    throw new InvalidBlacklistFlagException($blacklist_flag, "The given blacklist flag is not valid");
+
+            }
+
+            return true;
         }
 
         /**
