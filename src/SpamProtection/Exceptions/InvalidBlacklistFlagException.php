@@ -36,6 +36,7 @@
          * Gets the best match of the input, eg; Did you mean ...?
          *
          * @return string
+         * @noinspection PhpUnused
          */
         public function getBestMatch(): string
         {
