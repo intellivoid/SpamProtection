@@ -5,6 +5,7 @@
 
 
     use SpamProtection\Abstracts\BlacklistFlag;
+    use SpamProtection\Exceptions\PropertyConflictedException;
     use TelegramClientManager\Objects\TelegramClient\User;
 
     /**
@@ -148,6 +149,33 @@
             $this->GeneralizedID = null;
 
             return true;
+        }
+
+        /**
+         * Updates the whitelist state of the user, throws an exception if there's a conflict
+         *
+         * @param bool $whitelisted
+         * @return bool
+         * @throws PropertyConflictedException
+         */
+        public function updateWhitelist(bool $whitelisted): bool
+        {
+            if($whitelisted)
+            {
+                // If the user is already blacklisted
+                if($this->IsBlacklisted)
+                {
+                    throw new PropertyConflictedException("This blacklisted user cannot be whitelisted, remove the blacklist first.");
+                }
+
+                $this->IsWhitelisted = true;
+                return true;
+            }
+            else
+            {
+                $this->IsWhitelisted = false;
+                return true;
+            }
         }
 
         /**
