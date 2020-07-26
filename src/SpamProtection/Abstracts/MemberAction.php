@@ -7,7 +7,7 @@
      * Class MemberAction
      * @package SpamProtection\Abstracts
      */
-    class MemberAction
+    abstract class MemberAction
     {
         const Alert = "ALERT";
 
