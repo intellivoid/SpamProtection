@@ -30,4 +30,6 @@
         const Impersonator = "0xIMPER";
 
         const BanEvade = "0xEVADE";
+
+        const MassAdding = "0xMASSADD";
     }
