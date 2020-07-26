@@ -32,4 +32,6 @@
         const BanEvade = "0xEVADE";
 
         const MassAdding = "0xMASSADD";
+
+        const NameSpam = "0xNAMESPAM";
     }
