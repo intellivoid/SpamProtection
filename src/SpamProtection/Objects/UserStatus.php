@@ -92,6 +92,11 @@
          */
         public $OperatorNote;
 
+        /**
+         * The user client parameters obtained from an agent
+         *
+         * @var UserClientParameters
+         */
         public $ClientParameters;
 
         /**
@@ -111,7 +116,8 @@
                 '0x006' => (int)$this->IsBlacklisted,
                 '0x007' => $this->BlacklistFlag,
                 '0x008' => $this->OriginalPrivateID,
-                '0x009' => $this->OperatorNote
+                '0x009' => $this->OperatorNote,
+                '0x010' => $this->ClientParameters->toArray()
             );
         }
 
@@ -215,6 +221,15 @@
             else
             {
                 $UserStatusObject->OperatorNote = "None";
+            }
+
+            if(isset($data['0x010']))
+            {
+                $UserStatusObject->ClientParameters = UserClientParameters::fromArray($data['0x010']);
+            }
+            else
+            {
+                $UserStatusObject->ClientParameters = new UserClientParameters();
             }
 
             return $UserStatusObject;
