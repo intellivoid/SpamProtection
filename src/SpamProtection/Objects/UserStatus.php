@@ -100,6 +100,27 @@
         public $ClientParameters;
 
         /**
+         * The generalized language prediction of this user
+         *
+         * @var string
+         */
+        public $GeneralizedLanguage;
+
+        /**
+         * The probability of the language prediction generalization
+         *
+         * @var float|int
+         */
+        public $GeneralizedLanguageProbability;
+
+        /**
+         * The ID of the large generalization of the language
+         *
+         * @var string|null
+         */
+        public $LargeLanguageGeneralizedID;
+
+        /**
          * Returns a configuration array of the user stats
          *
          * @return array
@@ -117,7 +138,10 @@
                 '0x007' => $this->BlacklistFlag,
                 '0x008' => $this->OriginalPrivateID,
                 '0x009' => $this->OperatorNote,
-                '0x010' => $this->ClientParameters->toArray()
+                '0x010' => $this->ClientParameters->toArray(),
+                '0x011' => $this->GeneralizedLanguage,
+                '0x012' => $this->GeneralizedLanguageProbability,
+                '0x013' => $this->LargeLanguageGeneralizedID
             );
         }
 
@@ -230,6 +254,33 @@
             else
             {
                 $UserStatusObject->ClientParameters = new UserClientParameters();
+            }
+
+            if(isset($data['0x011']))
+            {
+                $UserStatusObject->GeneralizedLanguage = $data['0x011'];
+            }
+            else
+            {
+                $UserStatusObject->GeneralizedLanguage = "Unknown";
+            }
+
+            if(isset($data['0x012']))
+            {
+                $UserStatusObject->GeneralizedLanguageProbability = (float)$data['0x012'];
+            }
+            else
+            {
+                $UserStatusObject->GeneralizedLanguageProbability = 0;
+            }
+
+            if(isset($data['0x013']))
+            {
+                $UserStatusObject->LargeLanguageGeneralizedID = $data['0x013'];
+            }
+            else
+            {
+                $UserStatusObject->LargeLanguageGeneralizedID = null;
             }
 
             return $UserStatusObject;
