@@ -284,6 +284,33 @@
         }
 
         /**
+         * Updates the operator permissions
+         *
+         * @param bool $grant_permissions
+         * @return bool
+         * @throws PropertyConflictedException
+         * @noinspection PhpUnused
+         */
+        public function updateOperator(bool $grant_permissions): bool
+        {
+            if($this->IsBlacklisted)
+            {
+                throw new PropertyConflictedException("You can't make a blacklisted user an operator");
+            }
+
+             if($grant_permissions)
+             {
+                 $this->IsOperator = true;
+             }
+             else
+             {
+                 $this->IsOperator = false;
+             }
+
+            return true;
+        }
+
+        /**
          * Returns a configuration array of the user stats
          *
          * @return array
