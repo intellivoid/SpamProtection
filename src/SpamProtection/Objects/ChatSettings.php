@@ -131,6 +131,27 @@
         public $ChatClientParameters;
 
         /**
+         * The generalized language prediction of this user
+         *
+         * @var string
+         */
+        public $GeneralizedLanguage;
+
+        /**
+         * The probability of the language prediction generalization
+         *
+         * @var float|int
+         */
+        public $GeneralizedLanguageProbability;
+
+        /**
+         * The ID of the large generalization of the language
+         *
+         * @var string|null
+         */
+        public $LargeLanguageGeneralizedID;
+
+        /**
          * Constructs the configuration array for this object
          *
          * @return array
@@ -158,6 +179,9 @@
                 '0x010' => (int)$this->DeleteOlderMessages,
                 '0x011' => $this->LastMessageID,
                 '0x012' => $this->ChatClientParameters->toArray(),
+                '0x013' => $this->GeneralizedLanguage,
+                '0x014' => $this->GeneralizedLanguageProbability,
+                '0x015' => $this->LargeLanguageGeneralizedID,
                 'Ax000' => $AdminResults,
                 'Ax001' => (int)$this->AdminCacheLastUpdated
             );
@@ -290,6 +314,33 @@
             else
             {
                 $ChatSettingsObject->ChatClientParameters = new ChatClientParameters();
+            }
+
+            if(isset($data['0x013']))
+            {
+                $ChatSettingsObject->GeneralizedLanguage = $data['0x013'];
+            }
+            else
+            {
+                $ChatSettingsObject->GeneralizedLanguage = "Unknown";
+            }
+
+            if(isset($data['0x014']))
+            {
+                $ChatSettingsObject->GeneralizedLanguageProbability = (float)$data['0x014'];
+            }
+            else
+            {
+                $ChatSettingsObject->GeneralizedLanguageProbability = 0;
+            }
+
+            if(isset($data['0x015']))
+            {
+                $ChatSettingsObject->LargeLanguageGeneralizedID = $data['0x015'];
+            }
+            else
+            {
+                $ChatSettingsObject->LargeLanguageGeneralizedID = null;
             }
 
             $ChatSettingsObject->Administrators = array();
