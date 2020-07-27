@@ -60,10 +60,18 @@
         public $BlacklistProtectionEnabled;
 
         /**
+         * When enabled, the bot will ban users that are considered to be active spammers from the chat
+         *
+         * @var bool
+         */
+        public $ActiveSpammerProtectionEnabled;
+
+        /**
          * When enabled, new users who join the chat who are recognized to be
          * an active spammer will cause an alert to be shown
          *
          * @var bool
+         * @deprecated
          */
         public $ActiveSpammerAlertEnabled;
 
@@ -198,6 +206,7 @@
                 '0x015' => $this->LargeLanguageGeneralizedID,
                 '0x016' => $this->TemporaryVerificationCode,
                 '0x017' => $this->TemporaryVerificationCodeExpires,
+                '0x018' => (bool)$this->ActiveSpammerProtectionEnabled,
                 'Ax000' => $AdminResults,
                 'Ax001' => (int)$this->AdminCacheLastUpdated
             );
@@ -375,6 +384,15 @@
             else
             {
                 $ChatSettingsObject->TemporaryVerificationCodeExpires = null;
+            }
+
+            if(isset($data['0x018']))
+            {
+                $ChatSettingsObject->ActiveSpammerProtectionEnabled = (bool)$data['0x018'];
+            }
+            else
+            {
+                $ChatSettingsObject->ActiveSpammerProtectionEnabled = true;
             }
 
             $ChatSettingsObject->Administrators = array();
