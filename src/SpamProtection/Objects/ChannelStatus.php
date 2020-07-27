@@ -104,6 +104,24 @@
         public $LinkedChats;
 
         /**
+         * Links a chat to the channel
+         *
+         * @param string $public_id
+         * @return bool
+         * @noinspection PhpUnused
+         */
+        public function linkChat(string $public_id): bool
+        {
+            if(in_array($public_id, $this->LinkedChats))
+            {
+                return false;
+            }
+
+            $this->LinkedChats[] = $public_id;
+            return true;
+        }
+
+        /**
          * Returns an array which represents this object
          *
          * @return array
