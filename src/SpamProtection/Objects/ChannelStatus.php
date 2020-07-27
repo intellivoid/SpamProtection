@@ -121,7 +121,8 @@
                 '0x007' => $this->OperatorNote,
                 '0x008' => $this->GeneralizedLanguage,
                 '0x009' => $this->GeneralizedLanguageProbability,
-                '0x010' => $this->LargeLanguageGeneralizedID
+                '0x010' => $this->LargeLanguageGeneralizedID,
+                '0x011' => $this->LinkedChats
             );
         }
 
@@ -234,6 +235,15 @@
             else
             {
                 $ChannelStatusObject->LargeLanguageGeneralizedID = null;
+            }
+
+            if(isset($data['0x011']))
+            {
+                $ChannelStatusObject->LinkedChats = $data['0x011'];
+            }
+            else
+            {
+                $ChannelStatusObject->LinkedChats = [];
             }
 
             return $ChannelStatusObject;
