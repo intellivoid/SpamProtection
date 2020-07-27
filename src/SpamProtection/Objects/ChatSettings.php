@@ -5,6 +5,7 @@
 
     use SpamProtection\Abstracts\DetectionAction;
     use SpamProtection\Objects\TelegramObjects\ChatMember;
+    use SpamProtection\Utilities\Hashing;
     use TelegramClientManager\Objects\TelegramClient\Chat;
 
     /**
@@ -172,6 +173,19 @@
          * @var int
          */
         public $TemporaryVerificationCodeExpires;
+
+        /**
+         * Generates a temporary verification code that lasts for 10 minutes.
+         *
+         * @return string
+         */
+        public function generateTemporaryVerificationCode(): string
+        {
+            $this->TemporaryVerificationCode = Hashing::temporaryVerificationCode($this->Chat);
+            $this->TemporaryVerificationCodeExpires = (int)time() + 600;
+
+            return $this->TemporaryVerificationCode;
+        }
 
         /**
          * Constructs the configuration array for this object
