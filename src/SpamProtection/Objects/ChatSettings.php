@@ -4,6 +4,7 @@
     namespace SpamProtection\Objects;
 
     use SpamProtection\Abstracts\DetectionAction;
+    use SpamProtection\Exceptions\TemporaryVerificationCodeExpiredException;
     use SpamProtection\Objects\TelegramObjects\ChatMember;
     use SpamProtection\Utilities\Hashing;
     use TelegramClientManager\Objects\TelegramClient\Chat;
@@ -185,6 +186,15 @@
             $this->TemporaryVerificationCodeExpires = (int)time() + 600;
 
             return $this->TemporaryVerificationCode;
+        }
+
+        public function verifyTemporaryVerificationCode(string $code): bool
+        {
+            if((int)time() > $this->TemporaryVerificationCodeExpires)
+            {
+                throw new TemporaryVerificationCodeExpiredException();
+            }
+
         }
 
         /**
