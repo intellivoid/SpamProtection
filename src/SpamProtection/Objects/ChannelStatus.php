@@ -136,6 +136,7 @@
             }
 
             $this->LinkedChats = array_diff($this->LinkedChats, [$public_id]);
+            return true;
         }
 
         /**
