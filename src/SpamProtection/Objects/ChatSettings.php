@@ -5,6 +5,7 @@
 
     use SpamProtection\Abstracts\DetectionAction;
     use SpamProtection\Exceptions\TemporaryVerificationCodeExpiredException;
+    use SpamProtection\Exceptions\TemporaryVerificationCodeNotSetException;
     use SpamProtection\Objects\TelegramObjects\ChatMember;
     use SpamProtection\Utilities\Hashing;
     use TelegramClientManager\Objects\TelegramClient\Chat;
@@ -188,13 +189,39 @@
             return $this->TemporaryVerificationCode;
         }
 
-        public function verifyTemporaryVerificationCode(string $code): bool
+        /**
+         * Validates the temporary verification code and invalidates it if the option is enabled
+         *
+         * @param string $code
+         * @param bool $invalidate
+         * @return bool
+         * @throws TemporaryVerificationCodeExpiredException
+         * @throws TemporaryVerificationCodeNotSetException
+         */
+        public function verifyTemporaryVerificationCode(string $code, bool $invalidate=true): bool
         {
+            if($this->TemporaryVerificationCode == null)
+            {
+                throw new TemporaryVerificationCodeNotSetException();
+            }
+
             if((int)time() > $this->TemporaryVerificationCodeExpires)
             {
                 throw new TemporaryVerificationCodeExpiredException();
             }
 
+            if($this->TemporaryVerificationCode == $code)
+            {
+                if($invalidate)
+                {
+                    $this->TemporaryVerificationCode = null;
+                    $this->TemporaryVerificationCodeExpires = 0;
+                }
+
+                return true;
+            }
+
+            return false;
         }
 
         /**
