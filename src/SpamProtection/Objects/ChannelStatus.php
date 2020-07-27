@@ -122,6 +122,23 @@
         }
 
         /**
+         * Unlinks a chat from the channel
+         *
+         * @param string $public_id
+         * @return bool
+         * @noinspection PhpUnused
+         */
+        public function unlinkChat(string $public_id): bool
+        {
+            if(in_array($public_id, $this->LinkedChats) == false)
+            {
+                return false;
+            }
+
+            $this->LinkedChats = array_diff($this->LinkedChats, [$public_id]);
+        }
+
+        /**
          * Returns an array which represents this object
          *
          * @return array
