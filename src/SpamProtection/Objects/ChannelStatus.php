@@ -76,6 +76,27 @@
         public $OperatorNote;
 
         /**
+         * The generalized language prediction of this channel
+         *
+         * @var string
+         */
+        public $GeneralizedLanguage;
+
+        /**
+         * The probability of the language prediction generalization
+         *
+         * @var float|int
+         */
+        public $GeneralizedLanguageProbability;
+
+        /**
+         * The ID of the large generalization of the language
+         *
+         * @var string|null
+         */
+        public $LargeLanguageGeneralizedID;
+
+        /**
          * Returns an array which represents this object
          *
          * @return array
@@ -90,7 +111,10 @@
                 '0x004' => $this->GeneralizedID,
                 '0x005' => (float)$this->GeneralizedHam,
                 '0x006' => (float)$this->GeneralizedSpam,
-                '0x007' => $this->OperatorNote
+                '0x007' => $this->OperatorNote,
+                '0x008' => $this->GeneralizedLanguage,
+                '0x009' => $this->GeneralizedLanguageProbability,
+                '0x010' => $this->LargeLanguageGeneralizedID
             );
         }
 
@@ -176,6 +200,33 @@
             else
             {
                 $ChannelStatusObject->OperatorNote = null;
+            }
+
+            if(isset($data['0x008']))
+            {
+                $ChannelStatusObject->GeneralizedLanguage = $data['0x008'];
+            }
+            else
+            {
+                $ChannelStatusObject->GeneralizedLanguage = "Unknown";
+            }
+
+            if(isset($data['0x009']))
+            {
+                $ChannelStatusObject->GeneralizedLanguageProbability = (float)$data['0x009'];
+            }
+            else
+            {
+                $ChannelStatusObject->GeneralizedLanguageProbability = 0;
+            }
+
+            if(isset($data['0x010']))
+            {
+                $ChannelStatusObject->LargeLanguageGeneralizedID = $data['0x010'];
+            }
+            else
+            {
+                $ChannelStatusObject->LargeLanguageGeneralizedID = null;
             }
 
             return $ChannelStatusObject;
