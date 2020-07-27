@@ -180,6 +180,7 @@
          * Generates a temporary verification code that lasts for 10 minutes.
          *
          * @return string
+         * @noinspection PhpUnused
          */
         public function generateTemporaryVerificationCode(): string
         {
@@ -197,6 +198,7 @@
          * @return bool
          * @throws TemporaryVerificationCodeExpiredException
          * @throws TemporaryVerificationCodeNotSetException
+         * @noinspection PhpUnused
          */
         public function verifyTemporaryVerificationCode(string $code, bool $invalidate=true): bool
         {
