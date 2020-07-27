@@ -143,8 +143,14 @@
             return hash('sha256', $content . 'IVASP');
         }
 
+        /**
+         * Generates a temporary verification code for the chat
+         *
+         * @param Chat $chat
+         * @return string
+         */
         public static function temporaryVerificationCode(Chat $chat): string
         {
-            return hash('crc32', $chat->ID);
+            return hash('crc32', self::pepper($chat->ID));
         }
     }
