@@ -11,7 +11,7 @@
     {
         const Alert = "ALERT";
 
-        const Mute = "MUTE";
+        const MuteOffender = "MUTE";
 
-        const Ban = "BAN";
+        const BanOffender = "BAN";
     }
