@@ -97,6 +97,13 @@
         public $LargeLanguageGeneralizedID;
 
         /**
+         * Linked of linked chats
+         *
+         * @var string[]
+         */
+        public $LinkedChats;
+
+        /**
          * Returns an array which represents this object
          *
          * @return array

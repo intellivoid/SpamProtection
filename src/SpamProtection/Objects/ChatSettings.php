@@ -152,6 +152,20 @@
         public $LargeLanguageGeneralizedID;
 
         /**
+         * The generated unique temporary verification code for linking a chat to a log channel
+         *
+         * @var string
+         */
+        public $TemporaryVerificationCode;
+
+        /**
+         * The Unix Timestamp for when this code expires
+         *
+         * @var int
+         */
+        public $TemporaryVerificationCodeExpires;
+
+        /**
          * Constructs the configuration array for this object
          *
          * @return array
@@ -182,6 +196,8 @@
                 '0x013' => $this->GeneralizedLanguage,
                 '0x014' => $this->GeneralizedLanguageProbability,
                 '0x015' => $this->LargeLanguageGeneralizedID,
+                '0x016' => $this->TemporaryVerificationCode,
+                '0x017' => $this->TemporaryVerificationCodeExpires,
                 'Ax000' => $AdminResults,
                 'Ax001' => (int)$this->AdminCacheLastUpdated
             );
@@ -341,6 +357,24 @@
             else
             {
                 $ChatSettingsObject->LargeLanguageGeneralizedID = null;
+            }
+
+            if(isset($data['0x016']))
+            {
+                $ChatSettingsObject->TemporaryVerificationCode = $data['0x016'];
+            }
+            else
+            {
+                $ChatSettingsObject->TemporaryVerificationCode = null;
+            }
+
+            if(isset($data['0x017']))
+            {
+                $ChatSettingsObject->TemporaryVerificationCodeExpires = $data['0x017'];
+            }
+            else
+            {
+                $ChatSettingsObject->TemporaryVerificationCodeExpires = null;
             }
 
             $ChatSettingsObject->Administrators = array();
