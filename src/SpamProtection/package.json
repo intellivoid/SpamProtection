@@ -7,7 +7,12 @@
         "organization": "Intellivoid",
         "description": "Backend library for managing SpamProtection on Telegram",
         "url": "https://github.com/intellivoid/SpamProtection",
-        "dependencies": [],
+        "dependencies": [
+            {"package": "net.intellivoid.msqg", "required": true, "version": "latest"},
+            {"package": "net.intellivoid.ziproto", "required": true, "version": "latest"},
+            {"package": "net.intellivoid.acm", "required": true, "version": "latest"},
+            {"package": "net.intellivoid.telegram_client_manager", "required": true, "version": "latest"}
+        ],
         "configuration": {
             "autoload_method": "indexed",
             "main": null,
