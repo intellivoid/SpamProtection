@@ -1,0 +1,112 @@
+{
+    "package": {
+        "package_name": "net.intellivoid.spam_protection",
+        "name": "SpamProtection Lib",
+        "version": "1.0.2.1",
+        "author": "Zi Xing Narrakas",
+        "organization": "Intellivoid",
+        "description": "Backend library for managing SpamProtection on Telegram",
+        "url": "https://github.com/intellivoid/SpamProtection",
+        "dependencies": [],
+        "configuration": {
+            "autoload_method": "indexed",
+            "main": null,
+            "post_installation": [],
+            "pre_installation": []
+        }
+    },
+    "components": [
+        {
+            "required": true,
+            "file": "Abstracts/BlacklistFlag.php"
+        },
+        {
+            "required": true,
+            "file": "Abstracts/DetectionAction.php"
+        },
+        {
+            "required": true,
+            "file": "Abstracts/TelegramUserStatus.php"
+        },
+        {
+            "required": true,
+            "file": "AutoConfig.php"
+        },
+        {
+            "required": true,
+            "file": "Exceptions/DatabaseException.php"
+        },
+        {
+            "required": true,
+            "file": "Exceptions/DownloadFileException.php"
+        },
+        {
+            "required": true,
+            "file": "Exceptions/InvalidSearchMethod.php"
+        },
+        {
+            "required": true,
+            "file": "Exceptions/MessageLogNotFoundException.php"
+        },
+        {
+            "required": true,
+            "file": "Exceptions/UnsupportedMessageException.php"
+        },
+        {
+            "required": true,
+            "file": "Managers/MessageLogManager.php"
+        },
+        {
+            "required": true,
+            "file": "Managers/SettingsManager.php"
+        },
+        {
+            "required": true,
+            "file": "Objects/ChannelStatus.php"
+        },
+        {
+            "required": true,
+            "file": "Objects/ChatClientParameters.php"
+        },
+        {
+            "required": true,
+            "file": "Objects/ChatSettings.php"
+        },
+        {
+            "required": true,
+            "file": "Objects/MessageLog.php"
+        },
+        {
+            "required": true,
+            "file": "Objects/TelegramObjects/ChatMember.php"
+        },
+        {
+            "required": true,
+            "file": "Objects/TelegramObjects/Message.php"
+        },
+        {
+            "required": true,
+            "file": "Objects/TelegramObjects/PhotoSize.php"
+        },
+        {
+            "required": true,
+            "file": "Objects/UserClientParameters.php"
+        },
+        {
+            "required": true,
+            "file": "Objects/UserStatus.php"
+        },
+        {
+            "required": true,
+            "file": "SpamProtection.php"
+        },
+        {
+            "required": true,
+            "file": "Utilities/Hashing.php"
+        }
+    ],
+    "files": [
+        "configuration.ini",
+        "spam_protection.json"
+    ]
+}
