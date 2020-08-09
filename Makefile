@@ -3,7 +3,10 @@ clean:
 
 build:
 	mkdir build
-	ppm --no-intro --compile="src/SpamProtection" --directory="build"
+	ppm --compile="src/SpamProtection" --directory="build"
 
 install:
-	ppm --no-intro --no-prompt --install="build/net.intellivoid.spam_protection.ppm"
+	ppm --fix-conflict --no-prompt --install="build/net.intellivoid.spam_protection.ppm"
+
+update_package:
+	ppm --generate-package="src/SpamProtection"
