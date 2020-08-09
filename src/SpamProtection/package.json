@@ -1,0 +1,446 @@
+{
+    "package": {
+        "package_name": "net.intellivoid.spam_protection",
+        "name": "SpamProtection Lib",
+        "version": "1.2.0.0",
+        "author": "Zi Xing Narrakas",
+        "organization": "Intellivoid",
+        "description": "Backend library for managing SpamProtection on Telegram",
+        "url": "https://github.com/intellivoid/SpamProtection",
+        "dependencies": [
+            {
+                "package": "net.intellivoid.msqg",
+                "version": "latest",
+                "required": true
+            },
+            {
+                "package": "net.intellivoid.ziproto",
+                "version": "latest",
+                "required": true
+            },
+            {
+                "package": "net.intellivoid.acm",
+                "version": "latest",
+                "required": true
+            },
+            {
+                "package": "net.intellivoid.telegram_client_manager",
+                "version": "latest",
+                "required": true
+            }
+        ],
+        "configuration": {
+            "autoload_method": "indexed",
+            "main": null,
+            "post_installation": [],
+            "pre_installation": []
+        }
+    },
+    "components": [
+        {
+            "required": true,
+            "file": "Abstracts/BlacklistFlag.php"
+        },
+        {
+            "required": true,
+            "file": "Abstracts/DetectionAction.php"
+        },
+        {
+            "required": true,
+            "file": "Abstracts/MemberAction.php"
+        },
+        {
+            "required": true,
+            "file": "Abstracts/TelegramUserStatus.php"
+        },
+        {
+            "required": true,
+            "file": "acm/Abstracts/ExceptionCodes.php"
+        },
+        {
+            "required": true,
+            "file": "acm/acm.php"
+        },
+        {
+            "required": true,
+            "file": "acm/CommandLine.php"
+        },
+        {
+            "required": true,
+            "file": "acm/Exceptions/LocalConfigurationException.php"
+        },
+        {
+            "required": true,
+            "file": "acm/Exceptions/NoConfigurationFoundException.php"
+        },
+        {
+            "required": true,
+            "file": "acm/Objects/Schema.php"
+        },
+        {
+            "required": true,
+            "file": "AutoConfig.php"
+        },
+        {
+            "required": true,
+            "file": "Exceptions/DatabaseException.php"
+        },
+        {
+            "required": true,
+            "file": "Exceptions/DownloadFileException.php"
+        },
+        {
+            "required": true,
+            "file": "Exceptions/InvalidBlacklistFlagException.php"
+        },
+        {
+            "required": true,
+            "file": "Exceptions/InvalidSearchMethod.php"
+        },
+        {
+            "required": true,
+            "file": "Exceptions/MessageLogNotFoundException.php"
+        },
+        {
+            "required": true,
+            "file": "Exceptions/MissingOriginalPrivateIdException.php"
+        },
+        {
+            "required": true,
+            "file": "Exceptions/PropertyConflictedException.php"
+        },
+        {
+            "required": true,
+            "file": "Exceptions/TemporaryVerificationCodeExpiredException.php"
+        },
+        {
+            "required": true,
+            "file": "Exceptions/TemporaryVerificationCodeNotSetException.php"
+        },
+        {
+            "required": true,
+            "file": "Exceptions/UnsupportedMessageException.php"
+        },
+        {
+            "required": true,
+            "file": "Managers/MessageLogManager.php"
+        },
+        {
+            "required": true,
+            "file": "Managers/SettingsManager.php"
+        },
+        {
+            "required": true,
+            "file": "msqg/Abstracts/SortBy.php"
+        },
+        {
+            "required": true,
+            "file": "msqg/msqg.php"
+        },
+        {
+            "required": true,
+            "file": "msqg/QueryBuilder.php"
+        },
+        {
+            "required": true,
+            "file": "Objects/ChannelStatus.php"
+        },
+        {
+            "required": true,
+            "file": "Objects/ChatClientParameters.php"
+        },
+        {
+            "required": true,
+            "file": "Objects/ChatSettings.php"
+        },
+        {
+            "required": true,
+            "file": "Objects/MessageLog.php"
+        },
+        {
+            "required": true,
+            "file": "Objects/TelegramObjects/ChatMember.php"
+        },
+        {
+            "required": true,
+            "file": "Objects/TelegramObjects/Message.php"
+        },
+        {
+            "required": true,
+            "file": "Objects/TelegramObjects/PhotoSize.php"
+        },
+        {
+            "required": true,
+            "file": "Objects/UserClientParameters.php"
+        },
+        {
+            "required": true,
+            "file": "Objects/UserStatus.php"
+        },
+        {
+            "required": true,
+            "file": "SpamProtection.php"
+        },
+        {
+            "required": true,
+            "file": "TelegramClientManager/Abstracts/SearchMethods/TelegramClientSearchMethod.php"
+        },
+        {
+            "required": true,
+            "file": "TelegramClientManager/Abstracts/TelegramChatType.php"
+        },
+        {
+            "required": true,
+            "file": "TelegramClientManager/acm/Abstracts/ExceptionCodes.php"
+        },
+        {
+            "required": true,
+            "file": "TelegramClientManager/acm/acm.php"
+        },
+        {
+            "required": true,
+            "file": "TelegramClientManager/acm/CommandLine.php"
+        },
+        {
+            "required": true,
+            "file": "TelegramClientManager/acm/Exceptions/LocalConfigurationException.php"
+        },
+        {
+            "required": true,
+            "file": "TelegramClientManager/acm/Exceptions/NoConfigurationFoundException.php"
+        },
+        {
+            "required": true,
+            "file": "TelegramClientManager/acm/Objects/Schema.php"
+        },
+        {
+            "required": true,
+            "file": "TelegramClientManager/AutoConfig.php"
+        },
+        {
+            "required": true,
+            "file": "TelegramClientManager/Exceptions/DatabaseException.php"
+        },
+        {
+            "required": true,
+            "file": "TelegramClientManager/Exceptions/InvalidSearchMethod.php"
+        },
+        {
+            "required": true,
+            "file": "TelegramClientManager/Exceptions/TelegramClientNotFoundException.php"
+        },
+        {
+            "required": true,
+            "file": "TelegramClientManager/Managers/TelegramClientManager.php"
+        },
+        {
+            "required": true,
+            "file": "TelegramClientManager/msqg/Abstracts/SortBy.php"
+        },
+        {
+            "required": true,
+            "file": "TelegramClientManager/msqg/msqg.php"
+        },
+        {
+            "required": true,
+            "file": "TelegramClientManager/msqg/QueryBuilder.php"
+        },
+        {
+            "required": true,
+            "file": "TelegramClientManager/Objects/TelegramClient/Chat.php"
+        },
+        {
+            "required": true,
+            "file": "TelegramClientManager/Objects/TelegramClient/SessionData.php"
+        },
+        {
+            "required": true,
+            "file": "TelegramClientManager/Objects/TelegramClient/User.php"
+        },
+        {
+            "required": true,
+            "file": "TelegramClientManager/Objects/TelegramClient.php"
+        },
+        {
+            "required": true,
+            "file": "TelegramClientManager/TelegramClientManager.php"
+        },
+        {
+            "required": true,
+            "file": "TelegramClientManager/Utilities/Hashing.php"
+        },
+        {
+            "required": true,
+            "file": "TelegramClientManager/ZiProto/Abstracts/Options.php"
+        },
+        {
+            "required": true,
+            "file": "TelegramClientManager/ZiProto/Abstracts/Regex.php"
+        },
+        {
+            "required": true,
+            "file": "TelegramClientManager/ZiProto/BufferStream.php"
+        },
+        {
+            "required": true,
+            "file": "TelegramClientManager/ZiProto/DecodingOptions.php"
+        },
+        {
+            "required": true,
+            "file": "TelegramClientManager/ZiProto/EncodingOptions.php"
+        },
+        {
+            "required": true,
+            "file": "TelegramClientManager/ZiProto/Exception/DecodingFailedException.php"
+        },
+        {
+            "required": true,
+            "file": "TelegramClientManager/ZiProto/Exception/EncodingFailedException.php"
+        },
+        {
+            "required": true,
+            "file": "TelegramClientManager/ZiProto/Exception/InsufficientDataException.php"
+        },
+        {
+            "required": true,
+            "file": "TelegramClientManager/ZiProto/Exception/IntegerOverflowException.php"
+        },
+        {
+            "required": true,
+            "file": "TelegramClientManager/ZiProto/Exception/InvalidOptionException.php"
+        },
+        {
+            "required": true,
+            "file": "TelegramClientManager/ZiProto/Ext.php"
+        },
+        {
+            "required": true,
+            "file": "TelegramClientManager/ZiProto/Packet.php"
+        },
+        {
+            "required": true,
+            "file": "TelegramClientManager/ZiProto/Type/Binary.php"
+        },
+        {
+            "required": true,
+            "file": "TelegramClientManager/ZiProto/Type/Map.php"
+        },
+        {
+            "required": true,
+            "file": "TelegramClientManager/ZiProto/TypeTransformer/BinaryTransformer.php"
+        },
+        {
+            "required": true,
+            "file": "TelegramClientManager/ZiProto/TypeTransformer/Extension.php"
+        },
+        {
+            "required": true,
+            "file": "TelegramClientManager/ZiProto/TypeTransformer/MapTransformer.php"
+        },
+        {
+            "required": true,
+            "file": "TelegramClientManager/ZiProto/TypeTransformer/Validator.php"
+        },
+        {
+            "required": true,
+            "file": "TelegramClientManager/ZiProto/ZiProto.php"
+        },
+        {
+            "required": true,
+            "file": "Utilities/Hashing.php"
+        },
+        {
+            "required": true,
+            "file": "ZiProto/Abstracts/Options.php"
+        },
+        {
+            "required": true,
+            "file": "ZiProto/Abstracts/Regex.php"
+        },
+        {
+            "required": true,
+            "file": "ZiProto/BufferStream.php"
+        },
+        {
+            "required": true,
+            "file": "ZiProto/DecodingOptions.php"
+        },
+        {
+            "required": true,
+            "file": "ZiProto/EncodingOptions.php"
+        },
+        {
+            "required": true,
+            "file": "ZiProto/Exception/DecodingFailedException.php"
+        },
+        {
+            "required": true,
+            "file": "ZiProto/Exception/EncodingFailedException.php"
+        },
+        {
+            "required": true,
+            "file": "ZiProto/Exception/InsufficientDataException.php"
+        },
+        {
+            "required": true,
+            "file": "ZiProto/Exception/IntegerOverflowException.php"
+        },
+        {
+            "required": true,
+            "file": "ZiProto/Exception/InvalidOptionException.php"
+        },
+        {
+            "required": true,
+            "file": "ZiProto/Ext.php"
+        },
+        {
+            "required": true,
+            "file": "ZiProto/Packet.php"
+        },
+        {
+            "required": true,
+            "file": "ZiProto/Type/Binary.php"
+        },
+        {
+            "required": true,
+            "file": "ZiProto/Type/Map.php"
+        },
+        {
+            "required": true,
+            "file": "ZiProto/TypeTransformer/BinaryTransformer.php"
+        },
+        {
+            "required": true,
+            "file": "ZiProto/TypeTransformer/Extension.php"
+        },
+        {
+            "required": true,
+            "file": "ZiProto/TypeTransformer/MapTransformer.php"
+        },
+        {
+            "required": true,
+            "file": "ZiProto/TypeTransformer/Validator.php"
+        },
+        {
+            "required": true,
+            "file": "ZiProto/ZiProto.php"
+        }
+    ],
+    "files": [
+        "acm/acm.json",
+        "configuration.ini",
+        "msqg/msqg.json",
+        "package.json",
+        "spam_protection.json",
+        "TelegramClientManager/acm/acm.json",
+        "TelegramClientManager/configuration.ini",
+        "TelegramClientManager/msqg/msqg.json",
+        "TelegramClientManager/telegram_client_manager.json",
+        "TelegramClientManager/ZiProto/ziproto.json",
+        "ZiProto/.idea/misc.xml",
+        "ZiProto/.idea/modules.xml",
+        "ZiProto/.idea/workspace.xml",
+        "ZiProto/.idea/ZiProto.iml",
+        "ZiProto/ziproto.json"
+    ]
+}
