@@ -14,7 +14,7 @@
             {"package": "net.intellivoid.telegram_client_manager", "required": true, "version": "latest"}
         ],
         "configuration": {
-            "autoload_method": "indexed",
+            "autoload_method": "generated_spl",
             "main": null,
             "post_installation": [],
             "pre_installation": []
