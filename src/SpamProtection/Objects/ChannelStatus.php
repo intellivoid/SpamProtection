@@ -4,6 +4,9 @@
     namespace SpamProtection\Objects;
 
     use SpamProtection\Abstracts\BlacklistFlag;
+    use SpamProtection\Exceptions\InvalidBlacklistFlagException;
+    use SpamProtection\Exceptions\MissingOriginalPrivateIdException;
+    use SpamProtection\Exceptions\PropertyConflictedException;
     use TelegramClientManager\Objects\TelegramClient\Chat;
 
     /**
@@ -138,6 +141,60 @@
             $this->LinkedChats = array_diff($this->LinkedChats, [$public_id]);
             return true;
         }
+
+        /**
+         * Updates the blacklist flag of the user
+         *
+         * @param string $blacklist_flag
+         * @return bool
+         * @throws InvalidBlacklistFlagException
+         * @throws PropertyConflictedException
+         * @noinspection PhpUnused
+         */
+        public function updateBlacklist(string $blacklist_flag): bool
+        {
+            if($this->IsWhitelisted)
+            {
+                throw new PropertyConflictedException("This whitelisted channel cannot be blacklisted, remove the whitelist first.");
+            }
+
+            // Auto-capitalize the flag
+            $blacklist_flag = strtoupper($blacklist_flag);
+            $blacklist_flag = str_replace("0X", "0x", $blacklist_flag);
+
+            switch($blacklist_flag)
+            {
+                case BlacklistFlag::None:
+                    $this->IsBlacklisted = false;
+                    $this->BlacklistFlag = $blacklist_flag;
+                    break;
+
+                case BlacklistFlag::Special:
+                case BlacklistFlag::Spam:
+                case BlacklistFlag::PornographicSpam:
+                case BlacklistFlag::PrivateSpam:
+                case BlacklistFlag::PiracySpam:
+                case BlacklistFlag::ChildAbuse:
+                case BlacklistFlag::Raid:
+                case BlacklistFlag::Scam:
+                case BlacklistFlag::Impersonator:
+                case BlacklistFlag::MassAdding:
+                case BlacklistFlag::NameSpam:
+                    $this->IsBlacklisted = true;
+                    $this->BlacklistFlag = $blacklist_flag;
+                    break;
+
+                case BlacklistFlag::BanEvade:
+                    throw new PropertyConflictedException("The blacklist flag is not applicable to a channel");
+
+                default:
+                    throw new InvalidBlacklistFlagException($blacklist_flag, "The given blacklist flag is not valid");
+
+            }
+
+            return true;
+        }
+
 
         /**
          * Returns an array which represents this object
