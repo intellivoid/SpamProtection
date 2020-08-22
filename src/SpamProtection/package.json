@@ -2,25 +2,12 @@
     "package": {
         "package_name": "net.intellivoid.spam_protection",
         "name": "SpamProtection Lib",
-<<<<<<< HEAD
-        "version": "1.0.2.1",
-=======
         "version": "1.2.0.0",
->>>>>>> 1.2.0.0
         "author": "Zi Xing Narrakas",
         "organization": "Intellivoid",
         "description": "Backend library for managing SpamProtection on Telegram",
         "url": "https://github.com/intellivoid/SpamProtection",
         "dependencies": [
-<<<<<<< HEAD
-            {"package": "net.intellivoid.msqg", "required": true, "version": "latest"},
-            {"package": "net.intellivoid.ziproto", "required": true, "version": "latest"},
-            {"package": "net.intellivoid.acm", "required": true, "version": "latest"},
-            {"package": "net.intellivoid.telegram_client_manager", "required": true, "version": "latest"}
-        ],
-        "configuration": {
-            "autoload_method": "generated_spl",
-=======
             {
                 "package": "net.intellivoid.msqg",
                 "version": "latest",
@@ -44,7 +31,6 @@
         ],
         "configuration": {
             "autoload_method": "indexed",
->>>>>>> 1.2.0.0
             "main": null,
             "post_installation": [],
             "pre_installation": []
@@ -61,13 +47,10 @@
         },
         {
             "required": true,
-<<<<<<< HEAD
-=======
             "file": "Abstracts/MemberAction.php"
         },
         {
             "required": true,
->>>>>>> 1.2.0.0
             "file": "Abstracts/TelegramUserStatus.php"
         },
         {
@@ -84,13 +67,10 @@
         },
         {
             "required": true,
-<<<<<<< HEAD
-=======
             "file": "Exceptions/InvalidBlacklistFlagException.php"
         },
         {
             "required": true,
->>>>>>> 1.2.0.0
             "file": "Exceptions/InvalidSearchMethod.php"
         },
         {
@@ -99,8 +79,6 @@
         },
         {
             "required": true,
-<<<<<<< HEAD
-=======
             "file": "Exceptions/MissingOriginalPrivateIdException.php"
         },
         {
@@ -117,7 +95,6 @@
         },
         {
             "required": true,
->>>>>>> 1.2.0.0
             "file": "Exceptions/UnsupportedMessageException.php"
         },
         {
@@ -175,10 +152,7 @@
     ],
     "files": [
         "configuration.ini",
-<<<<<<< HEAD
-=======
         "package.json",
->>>>>>> 1.2.0.0
         "spam_protection.json"
     ]
 }

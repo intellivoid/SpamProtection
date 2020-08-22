@@ -8,7 +8,6 @@
     use acm\acm;
     use Exception;
     use mysqli;
-    use ppm\ppm;
     use SpamProtection\Managers\MessageLogManager;
     use TelegramClientManager\TelegramClientManager;
 
@@ -16,18 +15,11 @@
     {
         include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Abstracts' . DIRECTORY_SEPARATOR . 'BlacklistFlag.php');
         include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Abstracts' . DIRECTORY_SEPARATOR . 'DetectionAction.php');
-<<<<<<< HEAD
-=======
         include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Abstracts' . DIRECTORY_SEPARATOR . 'MemberAction.php');
->>>>>>> 1.2.0.0
         include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Abstracts' . DIRECTORY_SEPARATOR . 'TelegramUserStatus.php');
 
         include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Exceptions' . DIRECTORY_SEPARATOR . 'DatabaseException.php');
         include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Exceptions' . DIRECTORY_SEPARATOR . 'DownloadFileException.php');
-<<<<<<< HEAD
-        include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Exceptions' . DIRECTORY_SEPARATOR . 'InvalidSearchMethod.php');
-        include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Exceptions' . DIRECTORY_SEPARATOR . 'MessageLogNotFoundException.php');
-=======
         include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Exceptions' . DIRECTORY_SEPARATOR . 'InvalidBlacklistFlagException.php');
         include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Exceptions' . DIRECTORY_SEPARATOR . 'InvalidSearchMethod.php');
         include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Exceptions' . DIRECTORY_SEPARATOR . 'MessageLogNotFoundException.php');
@@ -35,7 +27,6 @@
         include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Exceptions' . DIRECTORY_SEPARATOR . 'PropertyConflictedException.php');
         include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Exceptions' . DIRECTORY_SEPARATOR . 'TemporaryVerificationCodeExpiredException.php');
         include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Exceptions' . DIRECTORY_SEPARATOR . 'TemporaryVerificationCodeNotSetException.php');
->>>>>>> 1.2.0.0
         include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Exceptions' . DIRECTORY_SEPARATOR . 'UnsupportedMessageException.php');
 
         include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Objects' . DIRECTORY_SEPARATOR . 'TelegramObjects' . DIRECTORY_SEPARATOR . 'ChatMember.php');
@@ -76,16 +67,6 @@
             /** @noinspection PhpIncludeInspection */
             include_once(__DIR__ . DIRECTORY_SEPARATOR . 'acm' . DIRECTORY_SEPARATOR . 'acm.php');
         }
-<<<<<<< HEAD
-    }
-    else
-    {
-        ppm::import("net.intellivoid.msqg");
-        ppm::import("net.intellivoid.ziproto");
-        ppm::import("net.intellivoid.acm");
-        ppm::import("net.intellivoid.telegram_client_manager");
-=======
->>>>>>> 1.2.0.0
     }
 
     include_once(__DIR__ . DIRECTORY_SEPARATOR . 'AutoConfig.php');
