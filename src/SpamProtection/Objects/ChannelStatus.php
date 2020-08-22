@@ -4,6 +4,9 @@
     namespace SpamProtection\Objects;
 
     use SpamProtection\Abstracts\BlacklistFlag;
+    use SpamProtection\Exceptions\InvalidBlacklistFlagException;
+    use SpamProtection\Exceptions\MissingOriginalPrivateIdException;
+    use SpamProtection\Exceptions\PropertyConflictedException;
     use TelegramClientManager\Objects\TelegramClient\Chat;
 
     /**
@@ -76,6 +79,124 @@
         public $OperatorNote;
 
         /**
+         * The generalized language prediction of this channel
+         *
+         * @var string
+         */
+        public $GeneralizedLanguage;
+
+        /**
+         * The probability of the language prediction generalization
+         *
+         * @var float|int
+         */
+        public $GeneralizedLanguageProbability;
+
+        /**
+         * The ID of the large generalization of the language
+         *
+         * @var string|null
+         */
+        public $LargeLanguageGeneralizedID;
+
+        /**
+         * Linked of linked chats
+         *
+         * @var string[]
+         */
+        public $LinkedChats;
+
+        /**
+         * Links a chat to the channel
+         *
+         * @param string $public_id
+         * @return bool
+         * @noinspection PhpUnused
+         */
+        public function linkChat(string $public_id): bool
+        {
+            if(in_array($public_id, $this->LinkedChats))
+            {
+                return false;
+            }
+
+            $this->LinkedChats[] = $public_id;
+            return true;
+        }
+
+        /**
+         * Unlinks a chat from the channel
+         *
+         * @param string $public_id
+         * @return bool
+         * @noinspection PhpUnused
+         */
+        public function unlinkChat(string $public_id): bool
+        {
+            if(in_array($public_id, $this->LinkedChats) == false)
+            {
+                return false;
+            }
+
+            $this->LinkedChats = array_diff($this->LinkedChats, [$public_id]);
+            return true;
+        }
+
+        /**
+         * Updates the blacklist flag of the user
+         *
+         * @param string $blacklist_flag
+         * @return bool
+         * @throws InvalidBlacklistFlagException
+         * @throws PropertyConflictedException
+         * @noinspection PhpUnused
+         */
+        public function updateBlacklist(string $blacklist_flag): bool
+        {
+            if($this->IsWhitelisted)
+            {
+                throw new PropertyConflictedException("This whitelisted channel cannot be blacklisted, remove the whitelist first.");
+            }
+
+            // Auto-capitalize the flag
+            $blacklist_flag = strtoupper($blacklist_flag);
+            $blacklist_flag = str_replace("0X", "0x", $blacklist_flag);
+
+            switch($blacklist_flag)
+            {
+                case BlacklistFlag::None:
+                    $this->IsBlacklisted = false;
+                    $this->BlacklistFlag = $blacklist_flag;
+                    break;
+
+                case BlacklistFlag::Special:
+                case BlacklistFlag::Spam:
+                case BlacklistFlag::PornographicSpam:
+                case BlacklistFlag::PrivateSpam:
+                case BlacklistFlag::PiracySpam:
+                case BlacklistFlag::ChildAbuse:
+                case BlacklistFlag::Raid:
+                case BlacklistFlag::Scam:
+                case BlacklistFlag::Impersonator:
+                case BlacklistFlag::MassAdding:
+                case BlacklistFlag::NameSpam:
+                    $this->IsBlacklisted = true;
+                    $this->BlacklistFlag = $blacklist_flag;
+                    break;
+
+                case BlacklistFlag::BanEvade:
+                    throw new PropertyConflictedException("The blacklist flag is not applicable to a channel");
+
+                default:
+                    throw new InvalidBlacklistFlagException($blacklist_flag, "The given blacklist flag is not valid");
+
+            }
+
+            return true;
+        }
+
+
+        /**
          * Returns an array which represents this object
          *
          * @return array
@@ -90,7 +211,11 @@
                 '0x004' => $this->GeneralizedID,
                 '0x005' => (float)$this->GeneralizedHam,
                 '0x006' => (float)$this->GeneralizedSpam,
-                '0x007' => $this->OperatorNote
+                '0x007' => $this->OperatorNote,
+                '0x008' => $this->GeneralizedLanguage,
+                '0x009' => $this->GeneralizedLanguageProbability,
+                '0x010' => $this->LargeLanguageGeneralizedID,
+                '0x011' => $this->LinkedChats
             );
         }
 
@@ -176,6 +301,42 @@
             else
             {
                 $ChannelStatusObject->OperatorNote = null;
+            }
+
+            if(isset($data['0x008']))
+            {
+                $ChannelStatusObject->GeneralizedLanguage = $data['0x008'];
+            }
+            else
+            {
+                $ChannelStatusObject->GeneralizedLanguage = "Unknown";
+            }
+
+            if(isset($data['0x009']))
+            {
+                $ChannelStatusObject->GeneralizedLanguageProbability = (float)$data['0x009'];
+            }
+            else
+            {
+                $ChannelStatusObject->GeneralizedLanguageProbability = 0;
+            }
+
+            if(isset($data['0x010']))
+            {
+                $ChannelStatusObject->LargeLanguageGeneralizedID = $data['0x010'];
+            }
+            else
+            {
+                $ChannelStatusObject->LargeLanguageGeneralizedID = null;
+            }
+
+            if(isset($data['0x011']))
+            {
+                $ChannelStatusObject->LinkedChats = $data['0x011'];
+            }
+            else
+            {
+                $ChannelStatusObject->LinkedChats = [];
             }
 
             return $ChannelStatusObject;
