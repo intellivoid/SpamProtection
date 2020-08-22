@@ -44,7 +44,7 @@
             {
                 return "0xSPAM";
             }
-            
+
             $best = null;
             $min = (strlen($this->input) / 4 + 1) * 10 + .1;
             foreach (array_unique(BlacklistFlag::All) as $item)
