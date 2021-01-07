@@ -11,64 +11,6 @@
     use SpamProtection\Managers\MessageLogManager;
     use TelegramClientManager\TelegramClientManager;
 
-    if(defined("PPM") == false)
-    {
-        include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Abstracts' . DIRECTORY_SEPARATOR . 'BlacklistFlag.php');
-        include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Abstracts' . DIRECTORY_SEPARATOR . 'DetectionAction.php');
-        include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Abstracts' . DIRECTORY_SEPARATOR . 'MemberAction.php');
-        include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Abstracts' . DIRECTORY_SEPARATOR . 'TelegramUserStatus.php');
-
-        include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Exceptions' . DIRECTORY_SEPARATOR . 'DatabaseException.php');
-        include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Exceptions' . DIRECTORY_SEPARATOR . 'DownloadFileException.php');
-        include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Exceptions' . DIRECTORY_SEPARATOR . 'InvalidBlacklistFlagException.php');
-        include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Exceptions' . DIRECTORY_SEPARATOR . 'InvalidSearchMethod.php');
-        include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Exceptions' . DIRECTORY_SEPARATOR . 'MessageLogNotFoundException.php');
-        include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Exceptions' . DIRECTORY_SEPARATOR . 'MissingOriginalPrivateIdException.php');
-        include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Exceptions' . DIRECTORY_SEPARATOR . 'PropertyConflictedException.php');
-        include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Exceptions' . DIRECTORY_SEPARATOR . 'TemporaryVerificationCodeExpiredException.php');
-        include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Exceptions' . DIRECTORY_SEPARATOR . 'TemporaryVerificationCodeNotSetException.php');
-        include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Exceptions' . DIRECTORY_SEPARATOR . 'UnsupportedMessageException.php');
-
-        include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Objects' . DIRECTORY_SEPARATOR . 'TelegramObjects' . DIRECTORY_SEPARATOR . 'ChatMember.php');
-        include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Objects' . DIRECTORY_SEPARATOR . 'TelegramObjects' . DIRECTORY_SEPARATOR . 'Message.php');
-        include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Objects' . DIRECTORY_SEPARATOR . 'TelegramObjects' . DIRECTORY_SEPARATOR . 'PhotoSize.php');
-        include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Objects' . DIRECTORY_SEPARATOR . 'ChannelStatus.php');
-        include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Objects' . DIRECTORY_SEPARATOR . 'ChatClientParameters.php');
-        include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Objects' . DIRECTORY_SEPARATOR . 'ChatSettings.php');
-        include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Objects' . DIRECTORY_SEPARATOR . 'MessageLog.php');
-        include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Objects' . DIRECTORY_SEPARATOR . 'UserClientParameters.php');
-        include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Objects' . DIRECTORY_SEPARATOR . 'UserStatus.php');
-
-        include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Managers' . DIRECTORY_SEPARATOR . 'MessageLogManager.php');
-        include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Managers' . DIRECTORY_SEPARATOR . 'SettingsManager.php');
-
-        include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Utilities' . DIRECTORY_SEPARATOR . 'Hashing.php');
-
-        if(class_exists('msqg\msqg') == false)
-        {
-            /** @noinspection PhpIncludeInspection */
-            include_once(__DIR__ . DIRECTORY_SEPARATOR . 'msqg' . DIRECTORY_SEPARATOR . 'msqg.php');
-        }
-
-        if(class_exists('ZiProto\ZiProto') == false)
-        {
-            /** @noinspection PhpIncludeInspection */
-            include_once(__DIR__ . DIRECTORY_SEPARATOR . 'ZiProto' . DIRECTORY_SEPARATOR . 'ZiProto.php');
-        }
-
-        if(class_exists('TelegramClientManager\TelegramClientManager') == false)
-        {
-            /** @noinspection PhpIncludeInspection */
-            include_once(__DIR__ . DIRECTORY_SEPARATOR . 'TelegramClientManager' . DIRECTORY_SEPARATOR . 'TelegramClientManager.php');
-        }
-
-        if(class_exists('acm\acm') == false)
-        {
-            /** @noinspection PhpIncludeInspection */
-            include_once(__DIR__ . DIRECTORY_SEPARATOR . 'acm' . DIRECTORY_SEPARATOR . 'acm.php');
-        }
-    }
-
     include_once(__DIR__ . DIRECTORY_SEPARATOR . 'AutoConfig.php');
 
 
@@ -129,13 +71,7 @@
         {
             if($this->database == null)
             {
-                $this->database = new mysqli(
-                    $this->DatabaseConfiguration['Host'],
-                    $this->DatabaseConfiguration['Username'],
-                    $this->DatabaseConfiguration['Password'],
-                    $this->DatabaseConfiguration['Database'],
-                    $this->DatabaseConfiguration['Port']
-                );
+                $this->connectDatabase();
             }
 
             return $this->database;
@@ -162,6 +98,34 @@
             }
 
             return $this->TelegramClientManager;
+        }
+
+        /**
+         * Closes the current database connection
+         */
+        public function disconnectDatabase()
+        {
+            $this->database->close();
+            $this->database = null;
+        }
+
+        /**
+         * Creates a new database connection
+         */
+        public function connectDatabase()
+        {
+            if($this->database !== null)
+            {
+                $this->disconnectDatabase();
+            }
+
+            $this->database = new mysqli(
+                $this->DatabaseConfiguration['Host'],
+                $this->DatabaseConfiguration['Username'],
+                $this->DatabaseConfiguration['Password'],
+                $this->DatabaseConfiguration['Name'],
+                $this->DatabaseConfiguration['Port']
+            );
         }
 
     }
