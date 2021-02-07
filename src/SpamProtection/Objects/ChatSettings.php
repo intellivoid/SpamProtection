@@ -79,6 +79,13 @@
         public $ActiveSpammerAlertEnabled;
 
         /**
+         * Indicates if the NSFW filter is enabled or not
+         *
+         * @var bool
+         */
+        public $NsfwFilterEnabled;
+
+        /**
          * When enabled, when an active spammer is detected the bot will ban the spammer
          *
          * @var bool
@@ -260,6 +267,7 @@
                 '0x016' => $this->TemporaryVerificationCode,
                 '0x017' => $this->TemporaryVerificationCodeExpires,
                 '0x018' => (bool)$this->ActiveSpammerProtectionEnabled,
+                '0x019' => (bool)$this->NsfwFilterEnabled,
                 'Ax000' => $AdminResults,
                 'Ax001' => (int)$this->AdminCacheLastUpdated
             );
@@ -446,6 +454,15 @@
             else
             {
                 $ChatSettingsObject->ActiveSpammerProtectionEnabled = true;
+            }
+
+            if(isset($data['0x019']))
+            {
+                $ChatSettingsObject->NsfwFilterEnabled = (bool)$data['0x019'];
+            }
+            else
+            {
+                $ChatSettingsObject->NsfwFilterEnabled = true;
             }
 
             $ChatSettingsObject->Administrators = array();
