@@ -86,6 +86,13 @@
         public $NsfwFilterEnabled;
 
         /**
+         * The action to take against NSFW images
+         *
+         * @var string|DetectionAction
+         */
+        public $NsfwDetectionAction;
+
+        /**
          * When enabled, when an active spammer is detected the bot will ban the spammer
          *
          * @var bool
@@ -268,6 +275,7 @@
                 '0x017' => $this->TemporaryVerificationCodeExpires,
                 '0x018' => (bool)$this->ActiveSpammerProtectionEnabled,
                 '0x019' => (bool)$this->NsfwFilterEnabled,
+                '0x020' => $this->NsfwDetectionAction,
                 'Ax000' => $AdminResults,
                 'Ax001' => (int)$this->AdminCacheLastUpdated
             );
@@ -463,6 +471,15 @@
             else
             {
                 $ChatSettingsObject->NsfwFilterEnabled = true;
+            }
+
+            if(isset($data['0x020']))
+            {
+                $ChatSettingsObject->NsfwDetectionAction = $data['0x020'];
+            }
+            else
+            {
+                $ChatSettingsObject->NsfwDetectionAction = DetectionAction::DeleteMessage;
             }
 
             $ChatSettingsObject->Administrators = array();

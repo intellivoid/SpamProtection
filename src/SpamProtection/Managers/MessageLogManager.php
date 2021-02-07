@@ -226,8 +226,8 @@
             $content_hash = $this->spamProtection->getDatabase()->real_escape_string(Hashing::hashRemoteFile($photoSize->URL));
             $photo_size = $this->spamProtection->getDatabase()->real_escape_string(ZiProto::encode($photoSize->toArray()));
             $message_hash = Hashing::messageImageHash($message_id, $chat_id, $user_id, $timestamp, $content_hash, $photoSize);
-            $spam_prediction = (float)$photoSize->SpamPrediction;
-            $ham_prediction = (float)$photoSize->HamPrediction;
+            $spam_prediction = (float)$photoSize->UnsafePrediction;
+            $ham_prediction = (float)$photoSize->SafePrediction;
 
             $Query = QueryBuilder::insert_into('message_logs', array(
                 'message_hash' => $message_hash,

@@ -11,26 +11,30 @@
             {
                 "package": "net.intellivoid.msqg",
                 "version": "latest",
+                "source": "default@github/intellivoid/msqg",
                 "required": true
             },
             {
                 "package": "net.intellivoid.ziproto",
                 "version": "latest",
+                "source": "default@github/intellivoid/ziproto",
                 "required": true
             },
             {
                 "package": "net.intellivoid.acm",
                 "version": "latest",
+                "source": "default@github/intellivoid/acm",
                 "required": true
             },
             {
                 "package": "net.intellivoid.telegram_client_manager",
                 "version": "latest",
+                "source": "default@github/intellivoid/iva-telegram",
                 "required": true
             }
         ],
         "configuration": {
-            "autoload_method": "indexed",
+            "autoload_method": "generated_spl",
             "main": null,
             "post_installation": [],
             "pre_installation": []
@@ -43,7 +47,7 @@
         },
         {
             "required": true,
-            "file": "Abstracts/DetectionAction.php"
+            "file": "Abstracts/TelegramUserStatus.php"
         },
         {
             "required": true,
@@ -51,11 +55,11 @@
         },
         {
             "required": true,
-            "file": "Abstracts/TelegramUserStatus.php"
+            "file": "Abstracts/DetectionAction.php"
         },
         {
             "required": true,
-            "file": "AutoConfig.php"
+            "file": "SpamProtection.php"
         },
         {
             "required": true,
@@ -63,23 +67,11 @@
         },
         {
             "required": true,
-            "file": "Exceptions/DownloadFileException.php"
-        },
-        {
-            "required": true,
             "file": "Exceptions/InvalidBlacklistFlagException.php"
         },
         {
             "required": true,
-            "file": "Exceptions/InvalidSearchMethod.php"
-        },
-        {
-            "required": true,
-            "file": "Exceptions/MessageLogNotFoundException.php"
-        },
-        {
-            "required": true,
-            "file": "Exceptions/MissingOriginalPrivateIdException.php"
+            "file": "Exceptions/UnsupportedMessageException.php"
         },
         {
             "required": true,
@@ -95,23 +87,27 @@
         },
         {
             "required": true,
-            "file": "Exceptions/UnsupportedMessageException.php"
+            "file": "Exceptions/InvalidSearchMethod.php"
         },
         {
             "required": true,
-            "file": "Managers/MessageLogManager.php"
+            "file": "Exceptions/MissingOriginalPrivateIdException.php"
         },
         {
             "required": true,
-            "file": "Managers/SettingsManager.php"
+            "file": "Exceptions/DownloadFileException.php"
         },
         {
             "required": true,
-            "file": "Objects/ChannelStatus.php"
+            "file": "Exceptions/MessageLogNotFoundException.php"
         },
         {
             "required": true,
-            "file": "Objects/ChatClientParameters.php"
+            "file": "Utilities/Hashing.php"
+        },
+        {
+            "required": true,
+            "file": "AutoConfig.php"
         },
         {
             "required": true,
@@ -119,19 +115,7 @@
         },
         {
             "required": true,
-            "file": "Objects/MessageLog.php"
-        },
-        {
-            "required": true,
-            "file": "Objects/TelegramObjects/ChatMember.php"
-        },
-        {
-            "required": true,
-            "file": "Objects/TelegramObjects/Message.php"
-        },
-        {
-            "required": true,
-            "file": "Objects/TelegramObjects/PhotoSize.php"
+            "file": "Objects/ChatClientParameters.php"
         },
         {
             "required": true,
@@ -143,16 +127,36 @@
         },
         {
             "required": true,
-            "file": "SpamProtection.php"
+            "file": "Objects/MessageLog.php"
         },
         {
             "required": true,
-            "file": "Utilities/Hashing.php"
+            "file": "Objects/TelegramObjects/ChatMember.php"
+        },
+        {
+            "required": true,
+            "file": "Objects/TelegramObjects/PhotoSize.php"
+        },
+        {
+            "required": true,
+            "file": "Objects/TelegramObjects/Message.php"
+        },
+        {
+            "required": true,
+            "file": "Objects/ChannelStatus.php"
+        },
+        {
+            "required": true,
+            "file": "Managers/MessageLogManager.php"
+        },
+        {
+            "required": true,
+            "file": "Managers/SettingsManager.php"
         }
     ],
     "files": [
-        "configuration.ini",
         "package.json",
+        "configuration.ini",
         "spam_protection.json"
     ]
 }

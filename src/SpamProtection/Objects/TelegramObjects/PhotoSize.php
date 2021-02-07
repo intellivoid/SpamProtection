@@ -54,14 +54,14 @@
          *
          * @var float|null
          */
-        public $HamPrediction;
+        public $SafePrediction;
 
         /**
          * The spam prediction of the image
          *
          * @var float|null
          */
-        public $SpamPrediction;
+        public $UnsafePrediction;
 
         /**
          * Returns an array which represents this object.
@@ -77,8 +77,8 @@
                 'height' => (int)$this->Height,
                 'file_size' => $this->FileSize,
                 'url' => $this->URL,
-                'ham_prediction' => $this->HamPrediction,
-                'spam_prediction' => $this->SpamPrediction
+                'safe_prediction' => $this->SafePrediction,
+                'unsafe_prediction' => $this->UnsafePrediction
             );
         }
 
@@ -122,14 +122,14 @@
                 $PhotoSizeObject->URL = $data['url'];
             }
 
-            if(isset($data['ham_prediction']))
+            if(isset($data['safe_prediction']))
             {
-                $PhotoSizeObject->HamPrediction = (float)$data['ham_prediction'];
+                $PhotoSizeObject->SafePrediction = (float)$data['safe_prediction'];
             }
 
-            if(isset($data['spam_prediction']))
+            if(isset($data['unsafe_prediction']))
             {
-                $PhotoSizeObject->SpamPrediction = (float)$data['spam_prediction'];
+                $PhotoSizeObject->UnsafePrediction = (float)$data['unsafe_prediction'];
             }
 
             return $PhotoSizeObject;
