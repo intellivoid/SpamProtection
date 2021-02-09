@@ -107,6 +107,10 @@
         },
         {
             "required": true,
+            "file": "Utilities/Validation.php"
+        },
+        {
+            "required": true,
             "file": "AutoConfig.php"
         },
         {

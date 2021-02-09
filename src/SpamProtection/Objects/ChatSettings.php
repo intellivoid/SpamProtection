@@ -8,6 +8,7 @@
     use SpamProtection\Exceptions\TemporaryVerificationCodeNotSetException;
     use SpamProtection\Objects\TelegramObjects\ChatMember;
     use SpamProtection\Utilities\Hashing;
+    use SpamProtection\Utilities\Validation;
     use TelegramClientManager\Objects\TelegramClient\Chat;
 
     /**
@@ -191,6 +192,21 @@
         public $TemporaryVerificationCodeExpires;
 
         /**
+         * The current configured language of the chat
+         *
+         * @var string
+         */
+        public $ConfiguredLanguage;
+
+        /**
+         * Indicates if the bot can respond to a user in the chat based off their preferred language rather than
+         * the chats, if set to True then the bot will only respond in the language that the chat is configured in.
+         *
+         * @var bool
+         */
+        public $StrictLocalization;
+
+        /**
          * Generates a temporary verification code that lasts for 10 minutes.
          *
          * @return string
@@ -276,6 +292,8 @@
                 '0x018' => (bool)$this->ActiveSpammerProtectionEnabled,
                 '0x019' => (bool)$this->NsfwFilterEnabled,
                 '0x020' => $this->NsfwDetectionAction,
+                '0x021' => $this->ConfiguredLanguage,
+                '0x022' => (bool)$this->StrictLocalization,
                 'Ax000' => $AdminResults,
                 'Ax001' => (int)$this->AdminCacheLastUpdated
             );
@@ -480,6 +498,32 @@
             else
             {
                 $ChatSettingsObject->NsfwDetectionAction = DetectionAction::DeleteMessage;
+            }
+
+            if(isset($data['0x021']))
+            {
+                $ChatSettingsObject->ConfiguredLanguage = $data['0x021'];
+            }
+            else
+            {
+                $ChatSettingsObject->ConfiguredLanguage = "en";
+
+                if($ChatSettingsObject->GeneralizedLanguage !== "Unknown" && $ChatSettingsObject->GeneralizedLanguage !== null)
+                {
+                    if(Validation::supportedLanguage($ChatSettingsObject->GeneralizedLanguage))
+                    {
+                        $ChatSettingsObject->ConfiguredLanguage = $ChatSettingsObject->GeneralizedLanguage;
+                    }
+                }
+            }
+
+            if(isset($data['0x022']))
+            {
+                $ChatSettingsObject->StrictLocalization = (bool)$data['0x022'];
+            }
+            else
+            {
+                $ChatSettingsObject->StrictLocalization = (bool)false;
             }
 
             $ChatSettingsObject->Administrators = array();

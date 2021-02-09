@@ -8,6 +8,7 @@
     use SpamProtection\Exceptions\InvalidBlacklistFlagException;
     use SpamProtection\Exceptions\MissingOriginalPrivateIdException;
     use SpamProtection\Exceptions\PropertyConflictedException;
+    use SpamProtection\Utilities\Validation;
     use TelegramClientManager\Objects\TelegramClient\User;
 
     /**
@@ -122,6 +123,13 @@
          * @var string|null
          */
         public $LargeLanguageGeneralizedID;
+
+        /**
+         * The current configured language of the chat
+         *
+         * @var string
+         */
+        public $ConfiguredLanguage;
 
         /**
          * Resets the trust prediction of this user
@@ -331,7 +339,8 @@
                 '0x010' => $this->ClientParameters->toArray(),
                 '0x011' => $this->GeneralizedLanguage,
                 '0x012' => $this->GeneralizedLanguageProbability,
-                '0x013' => $this->LargeLanguageGeneralizedID
+                '0x013' => $this->LargeLanguageGeneralizedID,
+                '0x014' => $this->ConfiguredLanguage
             );
         }
 
@@ -471,6 +480,23 @@
             else
             {
                 $UserStatusObject->LargeLanguageGeneralizedID = null;
+            }
+
+            if(isset($data['0x014']))
+            {
+                $UserStatusObject->ConfiguredLanguage = $data['0x014'];
+            }
+            else
+            {
+                $UserStatusObject->ConfiguredLanguage = "en";
+
+                if($UserStatusObject->GeneralizedLanguage !== "Unknown" && $UserStatusObject->GeneralizedLanguage !== null)
+                {
+                    if(Validation::supportedLanguage($UserStatusObject->GeneralizedLanguage))
+                    {
+                        $UserStatusObject->ConfiguredLanguage = $UserStatusObject->GeneralizedLanguage;
+                    }
+                }
             }
 
             return $UserStatusObject;
