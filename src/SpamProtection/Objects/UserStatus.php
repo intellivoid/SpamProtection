@@ -163,6 +163,13 @@
         public $LargeSpamGeneralizedID;
 
         /**
+         * Indicates if this user can appeal for their blacklist
+         *
+         * @var bool
+         */
+        public $CanAppeal;
+
+        /**
          * Resets the trust prediction of this user
          *
          * @return bool
@@ -376,7 +383,8 @@
                 '0x015' => $this->GeneralizedSpamLabel,
                 '0x016' => $this->GeneralizedSpamProbability,
                 '0x017' => $this->GeneralizedHamProbability,
-                '0x018' => $this->LargeSpamGeneralizedID
+                '0x018' => $this->LargeSpamGeneralizedID,
+                '0x019' => $this->CanAppeal
             );
         }
 
@@ -569,6 +577,23 @@
             else
             {
                 $UserStatusObject->LargeSpamGeneralizedID = null;
+            }
+
+            if(isset($data["0x019"]))
+            {
+                $UserStatusObject->CanAppeal = $data["0x019"];
+            }
+            else
+            {
+                if($UserStatusObject->IsBlacklisted)
+                {
+                    // If the user was already blacklisted before this update, they cannot appeal.
+                    $UserStatusObject->CanAppeal = false;
+                }
+                else
+                {
+                    $UserStatusObject->CanAppeal = true;
+                }
             }
 
             return $UserStatusObject;
