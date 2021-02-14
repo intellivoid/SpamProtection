@@ -5,7 +5,6 @@
 
     use SpamProtection\Abstracts\BlacklistFlag;
     use SpamProtection\Exceptions\InvalidBlacklistFlagException;
-    use SpamProtection\Exceptions\MissingOriginalPrivateIdException;
     use SpamProtection\Exceptions\PropertyConflictedException;
     use TelegramClientManager\Objects\TelegramClient\Chat;
 
@@ -53,6 +52,7 @@
         /**
          * The generalized ID of the channel
          *
+         * @deprecated
          * @var string|null
          */
         public $GeneralizedID;
@@ -60,6 +60,7 @@
         /**
          * The generalized ham prediction of the channel
          *
+         * @deprecated
          * @var float|int
          */
         public $GeneralizedHam;
@@ -67,6 +68,7 @@
         /**
          * The generalized spam prediction of the channel
          *
+         * @deprecated
          * @var float|int
          */
         public $GeneralizedSpam;
@@ -105,6 +107,36 @@
          * @var string[]
          */
         public $LinkedChats;
+
+        /**
+         * The probability of the spam prediction generalization
+         *
+         * @var float|int
+         */
+        public $GeneralizedSpamProbability;
+
+        /**
+         * The probability of the ham prediction generalization
+         *
+         * @var float|int
+         */
+        public $GeneralizedHamProbability;
+
+        /**
+         * The top label of the spam prediction generalization
+         *
+         * @var float|int
+         */
+        public $GeneralizedSpamLabel;
+
+
+        /**
+         * The ID of the large generalization of the Spam Prediction
+         *
+         * @var string|null
+         */
+        public $LargeSpamGeneralizedID;
+
 
         /**
          * Links a chat to the channel
@@ -215,7 +247,11 @@
                 '0x008' => $this->GeneralizedLanguage,
                 '0x009' => $this->GeneralizedLanguageProbability,
                 '0x010' => $this->LargeLanguageGeneralizedID,
-                '0x011' => $this->LinkedChats
+                '0x011' => $this->LinkedChats,
+                '0x012' => $this->GeneralizedSpamProbability,
+                '0x013' => $this->GeneralizedHamProbability,
+                '0x014' => $this->GeneralizedSpamLabel,
+                '0x015' => $this->LargeSpamGeneralizedID
             );
         }
 
@@ -337,6 +373,42 @@
             else
             {
                 $ChannelStatusObject->LinkedChats = [];
+            }
+
+            if(isset($data['0x012']))
+            {
+                $ChannelStatusObject->GeneralizedSpamProbability = $data["0x012"];
+            }
+            else
+            {
+                $ChannelStatusObject->GeneralizedSpamProbability = 0;
+            }
+
+            if(isset($data['0x013']))
+            {
+                $ChannelStatusObject->GeneralizedHamProbability = $data["0x013"];
+            }
+            else
+            {
+                $ChannelStatusObject->GeneralizedHamProbability = 0;
+            }
+
+            if(isset($data["0x014"]))
+            {
+                $ChannelStatusObject->GeneralizedSpamLabel = $data["0x014"];
+            }
+            else
+            {
+                $ChannelStatusObject->GeneralizedSpamLabel = "Unknown";
+            }
+
+            if(isset($data["0x015"]))
+            {
+                $ChannelStatusObject->LargeSpamGeneralizedID = $data["0x015"];
+            }
+            else
+            {
+                $ChannelStatusObject->LargeSpamGeneralizedID = null;
             }
 
             return $ChannelStatusObject;

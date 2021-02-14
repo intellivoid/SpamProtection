@@ -28,6 +28,7 @@
          * The generalized ID associated with this user, set it to "None" to reset.
          *
          * @var string
+         * @deprecated
          */
         public $GeneralizedID;
 
@@ -35,6 +36,7 @@
          * The generalized ham prediction
          *
          * @var float|int
+         * @deprecated
          */
         public $GeneralizedHam;
 
@@ -42,6 +44,7 @@
          * The generalized spam prediction
          *
          * @var float|int
+         * @deprecated
          */
         public $GeneralizedSpam;
 
@@ -132,6 +135,34 @@
         public $ConfiguredLanguage;
 
         /**
+         * The probability of the spam prediction generalization
+         *
+         * @var float|int
+         */
+        public $GeneralizedSpamProbability;
+
+        /**
+         * The probability of the ham prediction generalization
+         *
+         * @var float|int
+         */
+        public $GeneralizedHamProbability;
+
+        /**
+         * The top label of the spam prediction generalization
+         *
+         * @var float|int
+         */
+        public $GeneralizedSpamLabel;
+
+        /**
+         * The ID of the large generalization of the Spam Prediction
+         *
+         * @var string|null
+         */
+        public $LargeSpamGeneralizedID;
+
+        /**
          * Resets the trust prediction of this user
          *
          * @return bool
@@ -139,9 +170,10 @@
          */
         public function resetTrustPrediction(): bool
         {
-            $this->GeneralizedID = "None";
-            $this->GeneralizedHam = 0;
-            $this->GeneralizedSpam = 0;
+            $this->GeneralizedSpamLabel = "Unknown";
+            $this->GeneralizedSpamProbability = 0;
+            $this->GeneralizedHamProbability = 0;
+            $this->LargeSpamGeneralizedID = null;
 
             return true;
         }
@@ -156,7 +188,7 @@
         {
             $this->GeneralizedLanguage = "Unknown";
             $this->GeneralizedLanguageProbability = 0;
-            $this->GeneralizedID = null;
+            $this->LargeLanguageGeneralizedID = null;
 
             return true;
         }
@@ -340,7 +372,11 @@
                 '0x011' => $this->GeneralizedLanguage,
                 '0x012' => $this->GeneralizedLanguageProbability,
                 '0x013' => $this->LargeLanguageGeneralizedID,
-                '0x014' => $this->ConfiguredLanguage
+                '0x014' => $this->ConfiguredLanguage,
+                '0x015' => $this->GeneralizedSpamLabel,
+                '0x016' => $this->GeneralizedSpamProbability,
+                '0x017' => $this->GeneralizedHamProbability,
+                '0x018' => $this->LargeSpamGeneralizedID
             );
         }
 
@@ -497,6 +533,42 @@
                         $UserStatusObject->ConfiguredLanguage = $UserStatusObject->GeneralizedLanguage;
                     }
                 }
+            }
+
+            if(isset($data["0x015"]))
+            {
+                $UserStatusObject->GeneralizedSpamLabel = $data["0x015"];
+            }
+            else
+            {
+                $UserStatusObject->GeneralizedSpamLabel = "Unknown";
+            }
+
+            if(isset($data["0x016"]))
+            {
+                $UserStatusObject->GeneralizedSpamProbability = $data["0x016"];
+            }
+            else
+            {
+                $UserStatusObject->GeneralizedSpamProbability = 0;
+            }
+
+            if(isset($data["0x017"]))
+            {
+                $UserStatusObject->GeneralizedHamProbability = $data["0x017"];
+            }
+            else
+            {
+                $UserStatusObject->GeneralizedHamProbability = 0;
+            }
+
+            if(isset($data["0x018"]))
+            {
+                $UserStatusObject->LargeSpamGeneralizedID = $data["0x018"];
+            }
+            else
+            {
+                $UserStatusObject->LargeSpamGeneralizedID = null;
             }
 
             return $UserStatusObject;
