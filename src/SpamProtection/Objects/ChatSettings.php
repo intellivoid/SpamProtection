@@ -224,7 +224,14 @@
             if($time == null) $time = time();
             if($this->MessagesPerMinuteData == null) $this->MessagesPerMinuteData = [];
 
-            $this->MessagesPerMinuteData[$time] +=1;
+            if(isset($this->MessagesPerMinuteData[$time]))
+            {
+                $this->MessagesPerMinuteData[$time] += 1;
+            }
+            else
+            {
+                $this->MessagesPerMinuteData[$time] = 1;
+            }
 
             // Remove entries older than 60 seconds
             $new_data = [];
@@ -588,7 +595,7 @@
 
             if(isset($data['0x023']))
             {
-                $ChatSettingsObject->MessagesPerMinuteData = (bool)$data['0x023'];
+                $ChatSettingsObject->MessagesPerMinuteData = $data['0x023'];
             }
             else
             {
