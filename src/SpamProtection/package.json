@@ -2,7 +2,7 @@
     "package": {
         "package_name": "net.intellivoid.spam_protection",
         "name": "SpamProtection Lib",
-        "version": "1.2.0.1",
+        "version": "1.2.0.2",
         "author": "Zi Xing Narrakas",
         "organization": "Intellivoid",
         "description": "Backend library for managing SpamProtection on Telegram",

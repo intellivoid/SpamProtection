@@ -200,22 +200,27 @@
         /**
          * Tracks the message speed
          *
+         * @param int|null $time
          * @return bool
          */
-        public function trackMessageSpeed(): bool
+        public function trackMessageSpeed(int $time=null): bool
         {
+            if($time == null) $time = time();
             if($this->MessagesPerMinuteData == null) $this->MessagesPerMinuteData = [];
 
-            $this->MessagesPerMinuteData[time()] +=1;
+            $this->MessagesPerMinuteData[$time] +=1;
 
-            // Remove enteries older than 60 seconds
+            // Remove entries older than 60 seconds
+            $new_data = [];
             foreach($this->MessagesPerMinuteData as $timestamp => $value)
             {
-                if((time() - $timestamp) > 60)
+                if((time() - $timestamp) <= 60)
                 {
-                    unset($this->MessagesPerMinuteData[$timestamp]);
+                    $new_data[$timestamp] = $value;
                 }
             }
+
+            $this->MessagesPerMinuteData = $new_data;
 
             return True;
         }
@@ -239,9 +244,7 @@
                 }
             }
 
-            $results = ceil(array_sum($data) / count($data));
-            if($results == false) return 0;
-            return $results;
+            return array_sum($data);
         }
 
         /**

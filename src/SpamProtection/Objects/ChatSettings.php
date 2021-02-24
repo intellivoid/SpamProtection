@@ -207,6 +207,63 @@
         public $StrictLocalization;
 
         /**
+         * The data holding the messages per minute data
+         *
+         * @var array
+         */
+        public $MessagesPerMinuteData;
+
+        /**
+         * Tracks the message speed
+         *
+         * @param int|null $time
+         * @return bool
+         */
+        public function trackMessageSpeed(int $time=null): bool
+        {
+            if($time == null) $time = time();
+            if($this->MessagesPerMinuteData == null) $this->MessagesPerMinuteData = [];
+
+            $this->MessagesPerMinuteData[$time] +=1;
+
+            // Remove entries older than 60 seconds
+            $new_data = [];
+            foreach($this->MessagesPerMinuteData as $timestamp => $value)
+            {
+                if((time() - $timestamp) <= 60)
+                {
+                    $new_data[$timestamp] = $value;
+                }
+            }
+
+            $this->MessagesPerMinuteData = $new_data;
+
+            return True;
+        }
+
+        /**
+         * Calculates the average message per minute
+         *
+         * @return false|float|int
+         */
+        public function calculateAverageMessagesPerMinute()
+        {
+            if($this->MessagesPerMinuteData == null) return 0;
+            if(count($this->MessagesPerMinuteData) == 0) return 0;
+
+            $data = [];
+            foreach($this->MessagesPerMinuteData as $timestamp => $value)
+            {
+                if((time() - $timestamp) <= 60)
+                {
+                    $data[] = $value;
+                }
+            }
+
+            return array_sum($data);
+        }
+
+        /**
          * Generates a temporary verification code that lasts for 10 minutes.
          *
          * @return string
@@ -294,6 +351,7 @@
                 '0x020' => $this->NsfwDetectionAction,
                 '0x021' => $this->ConfiguredLanguage,
                 '0x022' => (bool)$this->StrictLocalization,
+                '0x023' => $this->MessagesPerMinuteData,
                 'Ax000' => $AdminResults,
                 'Ax001' => (int)$this->AdminCacheLastUpdated
             );
@@ -527,6 +585,15 @@
             }
 
             $ChatSettingsObject->Administrators = array();
+
+            if(isset($data['0x023']))
+            {
+                $ChatSettingsObject->MessagesPerMinuteData = (bool)$data['0x023'];
+            }
+            else
+            {
+                $ChatSettingsObject->MessagesPerMinuteData = [];
+            }
 
             if(isset($data['Ax000']))
             {
