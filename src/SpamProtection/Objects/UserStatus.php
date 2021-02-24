@@ -170,6 +170,27 @@
         public $CanAppeal;
 
         /**
+         * The total amount of messages sent as ham
+         *
+         * @var int
+         */
+        public $HamCount;
+
+        /**
+         * The total amount of messages sent as spam
+         *
+         * @var int
+         */
+        public $SpamCount;
+
+        /**
+         * Indicates if this account was created prior to the spam count update
+         *
+         * @var bool
+         */
+        public $PriorToSpamCount;
+
+        /**
          * Resets the trust prediction of this user
          *
          * @return bool
@@ -380,6 +401,79 @@
         }
 
         /**
+         * Gets the generalized spam value (Including the old value)
+         *
+         * @return float|int
+         */
+        public function getGeneralizedSpamValue()
+        {
+            if($this->GeneralizedSpamProbability !== null)
+            {
+                return $this->GeneralizedSpamProbability;
+            }
+
+            /** @noinspection PhpDeprecationInspection */
+            if($this->GeneralizedSpam !== null)
+            {
+                /** @noinspection PhpDeprecationInspection */
+                return $this->GeneralizedSpam;
+            }
+
+            return 0;
+        }
+
+        /**
+         * Gets the generalized ham value (Including the old value)
+         *
+         * @return float|int
+         */
+        public function getGeneralizedHamValue()
+        {
+            if($this->GeneralizedHamProbability !== null)
+            {
+                return $this->GeneralizedHamProbability;
+            }
+
+            /** @noinspection PhpDeprecationInspection */
+            if($this->GeneralizedHam !== null)
+            {
+                /** @noinspection PhpDeprecationInspection */
+                return $this->GeneralizedHam;
+            }
+
+            return 0;
+        }
+
+        /**
+         * Determines if the user is a potential spammer based off their generalized values, it will also take account
+         * if the user is new and the spam count
+         *
+         * @return bool
+         */
+        public function isPotentialSpammer(): bool
+        {
+            if($this->PriorToSpamCount)
+            {
+                if($this->SpamCount > 1)
+                {
+                    if($this->getGeneralizedSpamValue() > $this->getGeneralizedHamValue())
+                    {
+                        return true;
+                    }
+                }
+            }
+            else
+            {
+                if($this->getGeneralizedSpamValue() > $this->getGeneralizedHamValue())
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /**
          * Returns a configuration array of the user stats
          *
          * @return array
@@ -406,7 +500,10 @@
                 '0x016' => $this->GeneralizedSpamProbability,
                 '0x017' => $this->GeneralizedHamProbability,
                 '0x018' => $this->LargeSpamGeneralizedID,
-                '0x019' => $this->CanAppeal
+                '0x019' => $this->CanAppeal,
+                '0x020' => $this->HamCount,
+                '0x021' => $this->SpamCount,
+                '0x022' => $this->PriorToSpamCount
             );
         }
 
@@ -616,6 +713,33 @@
                 {
                     $UserStatusObject->CanAppeal = true;
                 }
+            }
+
+            if(isset($data['0x020']))
+            {
+                $UserStatusObject->HamCount = $data['0x020'];
+            }
+            else
+            {
+                $UserStatusObject->HamCount = 0;
+            }
+
+            if(isset($data['0x021']))
+            {
+                $UserStatusObject->SpamCount = $data['0x021'];
+            }
+            else
+            {
+                $UserStatusObject->SpamCount = 0;
+            }
+
+            if(isset($data['0x022']))
+            {
+                $UserStatusObject->PriorToSpamCount = $data['0x022'];
+            }
+            else
+            {
+                $UserStatusObject->PriorToSpamCount = false;
             }
 
             return $UserStatusObject;
