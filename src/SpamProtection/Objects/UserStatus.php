@@ -358,6 +358,28 @@
         }
 
         /**
+         * Returns a trust prediction score of the user
+         *
+         * @return float|int
+         */
+        public function getTrustPrediction()
+        {
+            if ($this->GeneralizedSpamProbability > 0 && $this->GeneralizedHamProbability > 0)
+            {
+                return 100 * (0.5**($this->GeneralizedSpamProbability/$this->GeneralizedHamProbability));
+            }
+
+            /** @noinspection PhpDeprecationInspection */
+            if($this->GeneralizedSpam !== null && $this->GeneralizedSpam > 0 && $this->GeneralizedHam !== null && $this->GeneralizedHam > 0)
+            {
+                /** @noinspection PhpDeprecationInspection */
+                return 100 * (0.5**($this->GeneralizedSpam/$this->GeneralizedHam));
+            }
+
+            return 0;
+        }
+
+        /**
          * Returns a configuration array of the user stats
          *
          * @return array
