@@ -191,6 +191,60 @@
         public $PriorToSpamCount;
 
         /**
+         * The data holding the messages per minute data
+         *
+         * @var array
+         */
+        public $MessagesPerMinuteData;
+
+        /**
+         * Tracks the message speed
+         *
+         * @return bool
+         */
+        public function trackMessageSpeed(): bool
+        {
+            if($this->MessagesPerMinuteData == null) $this->MessagesPerMinuteData = [];
+
+            $this->MessagesPerMinuteData[time()] +=1;
+
+            // Remove enteries older than 60 seconds
+            foreach($this->MessagesPerMinuteData as $timestamp => $value)
+            {
+                if((time() - $timestamp) > 60)
+                {
+                    unset($this->MessagesPerMinuteData[$timestamp]);
+                }
+            }
+
+            return True;
+        }
+
+        /**
+         * Calculates the average message per minute
+         *
+         * @return false|float|int
+         */
+        public function calculateAverageMessagesPerMinute()
+        {
+            if($this->MessagesPerMinuteData == null) return 0;
+            if(count($this->MessagesPerMinuteData) == 0) return 0;
+
+            $data = [];
+            foreach($this->MessagesPerMinuteData as $timestamp => $value)
+            {
+                if((time() - $timestamp) <= 60)
+                {
+                    $data[] = $value;
+                }
+            }
+
+            $results = ceil(array_sum($data) / count($data));
+            if($results == false) return 0;
+            return $results;
+        }
+
+        /**
          * Resets the trust prediction of this user
          *
          * @return bool
@@ -503,7 +557,8 @@
                 '0x019' => $this->CanAppeal,
                 '0x020' => $this->HamCount,
                 '0x021' => $this->SpamCount,
-                '0x022' => $this->PriorToSpamCount
+                '0x022' => $this->PriorToSpamCount,
+                '0x023' => $this->MessagesPerMinuteData
             );
         }
 
@@ -740,6 +795,15 @@
             else
             {
                 $UserStatusObject->PriorToSpamCount = false;
+            }
+
+            if(isset($data['0x023']))
+            {
+                $UserStatusObject->MessagesPerMinuteData = $data['0x023'];
+            }
+            else
+            {
+                $UserStatusObject->MessagesPerMinuteData = [];
             }
 
             return $UserStatusObject;
