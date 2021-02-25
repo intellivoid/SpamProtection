@@ -826,11 +826,11 @@
 
             if(isset($data['0x024']))
             {
-                $UserStatusObject->ReputationPoints = $data['0x024'];
+                $UserStatusObject->ReputationPoints = (int)$data['0x024'];
             }
             else
             {
-                $UserStatusObject->ReputationPoints = [];
+                $UserStatusObject->ReputationPoints = 0;
             }
 
             return $UserStatusObject;

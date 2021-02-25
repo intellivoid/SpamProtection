@@ -149,10 +149,10 @@
         public function updatePredictionVote(PredictionVotes $predictionVotes): bool
         {
             $Query = QueryBuilder::update("prediction_votes", [
-                "votes" => $this->spamProtection->getDatabase()->real_escape_string(ZiProto::encode($predictionVotes->toArray())),
+                "votes" => $this->spamProtection->getDatabase()->real_escape_string(ZiProto::encode($predictionVotes->Votes->toArray())),
                 "status" => (int)$predictionVotes->Status,
                 "last_updated_timestamp" => (int)time()
-            ]);
+            ], "id", $predictionVotes->ID);
             $QueryResults = $this->spamProtection->getDatabase()->query($Query);
 
             if($QueryResults == false)

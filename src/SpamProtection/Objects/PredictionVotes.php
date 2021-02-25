@@ -288,7 +288,7 @@
                 $PredictionVotesObject->PredictionHam = $data["prediction_ham"];
 
             if(isset($data["votes"]))
-                $PredictionVotesObject->Votes = $data["votes"];
+                $PredictionVotesObject->Votes = Votes::fromArray($data["votes"]);
 
             if(isset($data["status"]))
                 $PredictionVotesObject->Status = $data["status"];

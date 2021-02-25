@@ -66,6 +66,13 @@
         public $CpuNayVotes = 0;
 
         /**
+         * The amount of votes that consulted in ties
+         *
+         * @var int
+         */
+        public $TieVotes = 0;
+
+        /**
          * The total amount of voting records there are
          *
          * @var int
@@ -78,5 +85,12 @@
          * @var int
          */
         public $VotingRecordsFailureCount = 0;
+
+        /**
+         * The top 10 users that contributed
+         *
+         * @var array
+         */
+        public $TopUsers = [];
 
     }

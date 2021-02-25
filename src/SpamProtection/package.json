@@ -107,6 +107,10 @@
         },
         {
             "required": true,
+            "file": "Exceptions/VotingPoolAlreadyCompletedException.php"
+        },
+        {
+            "required": true,
             "file": "Exceptions/PredictionVotesNotFoundException.php"
         },
         {
@@ -144,6 +148,10 @@
         {
             "required": true,
             "file": "Exceptions/MessageLogNotFoundException.php"
+        },
+        {
+            "required": true,
+            "file": "Exceptions/ReportBuildAlreadyInProgressException.php"
         },
         {
             "required": true,

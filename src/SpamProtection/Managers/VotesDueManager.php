@@ -14,6 +14,8 @@
     use SpamProtection\Exceptions\InvalidSearchMethodException;
     use SpamProtection\Exceptions\NoPoolCurrentlyActiveExceptions;
     use SpamProtection\Exceptions\PredictionVotesNotFoundException;
+    use SpamProtection\Exceptions\ReportBuildAlreadyInProgressException;
+    use SpamProtection\Exceptions\VotingPoolAlreadyCompletedException;
     use SpamProtection\Exceptions\VotingPoolCurrentlyActiveException;
     use SpamProtection\Objects\VotesDueRecord;
     use SpamProtection\Objects\VotingPoolResults;
@@ -141,7 +143,7 @@
                 "records" => $this->spamProtection->getDatabase()->real_escape_string(ZiProto::encode($votesDueRecord->Records->toArray())),
                 "status" => (int)$votesDueRecord->Status,
                 "last_updated_timestamp" => (int)time()
-            ]);
+            ], "id", $votesDueRecord->ID);
             $QueryResults = $this->spamProtection->getDatabase()->query($Query);
 
             if($QueryResults == false)
@@ -161,12 +163,9 @@
          * @return VotingPoolResults|null
          * @throws DatabaseException
          * @throws InvalidSearchMethodException
-         * @throws NoPoolCurrentlyActiveExceptions
-         * @throws VotingPoolCurrentlyActiveException
          */
         public function finalizeResults(VotesDueRecord $votesDueRecord, TelegramClientManager $telegramClientManager, bool $createNewPool=true)
         {
-
             if(count($votesDueRecord->Records->Records) == 0)
             {
                 $votesDueRecord->Status = VotesDueRecordStatus::NotEnoughData;
@@ -178,6 +177,16 @@
                 return null;
             }
 
+            if($votesDueRecord->Status == VotesDueRecordStatus::BuildingReport)
+            {
+                throw new ReportBuildAlreadyInProgressException();
+            }
+
+            if($votesDueRecord->Status == VotesDueRecordStatus::Completed || $votesDueRecord->Status == VotesDueRecordStatus::NotEnoughData)
+            {
+                throw new VotingPoolAlreadyCompletedException();
+            }
+
             $VotingPoolResults = new VotingPoolResults();
             $votesDueRecord->Status = VotesDueRecordStatus::BuildingReport;
             $this->updatePool($votesDueRecord);
@@ -185,12 +194,21 @@
             if($createNewPool)
                 $this->createPool();
 
+            if(count($votesDueRecord->Records->Records) == 0)
+            {
+                $votesDueRecord->Status = VotesDueRecordStatus::NotEnoughData;
+                $this->updatePool($votesDueRecord);
+
+                return $VotingPoolResults;
+            }
+
             foreach($votesDueRecord->Records->Records as $record)
             {
                 try
                 {
                     $votesRecord = $this->spamProtection->getPredictionVotesManager()->getPredictionVote(PredictionVoteSearchMethod::ById, $record);
                     $votesRecord->Status = PredictionVotesStatus::Closed;
+                    $VotingPoolResults->VotingRecordsCount += 1;
 
                     $this->spamProtection->getPredictionVotesManager()->updatePredictionVote($votesRecord);
 
@@ -209,21 +227,25 @@
                     $FinalVerdict = $votesRecord->getFinalVerdict();
                     if($FinalVerdict == VerdictResult::Yay || $FinalVerdict == VerdictResult::Nay)
                     {
-                        foreach($votesRecord->getPunishableVoters() as $rewardedVoter)
+                        foreach($votesRecord->getPunishableVoters() as $punishableVoter)
                         {
                             try
                             {
-                                $RewardedVoter = $telegramClientManager->getTelegramClientManager()->getClient(
-                                    TelegramClientSearchMethod::byId, $rewardedVoter
+                                $PunishedVoter = $telegramClientManager->getTelegramClientManager()->getClient(
+                                    TelegramClientSearchMethod::byId, $punishableVoter
                                 );
-                                $UserStatus = SettingsManager::getUserStatus($RewardedVoter);
+                                $UserStatus = SettingsManager::getUserStatus($PunishedVoter);
                                 $UserStatus->ReputationPoints -= 1;
-                                $RewardedVoter = SettingsManager::updateUserStatus($RewardedVoter, $UserStatus);
-                                $telegramClientManager->getTelegramClientManager()->updateClient($RewardedVoter);
+                                $PunishedVoter = SettingsManager::updateUserStatus($PunishedVoter, $UserStatus);
+                                $telegramClientManager->getTelegramClientManager()->updateClient($PunishedVoter);
+
+                                if(isset($VotingPoolResults->TopUsers[$punishableVoter]) == false)
+                                    $VotingPoolResults->TopUsers[$punishableVoter] = 0;
+                                $VotingPoolResults->TopUsers[$punishableVoter] -= 1;
                             }
                             catch(Exception $e)
                             {
-                                var_dump($e);
+                                unset($e);
                             }
                         }
 
@@ -238,10 +260,14 @@
                                 $UserStatus->ReputationPoints += 1;
                                 $RewardedVoter = SettingsManager::updateUserStatus($RewardedVoter, $UserStatus);
                                 $telegramClientManager->getTelegramClientManager()->updateClient($RewardedVoter);
+
+                                if(isset($VotingPoolResults->TopUsers[$rewardedVoter]) == false)
+                                    $VotingPoolResults->TopUsers[$rewardedVoter] = 0;
+                                $VotingPoolResults->TopUsers[$rewardedVoter] += 1;
                             }
                             catch(Exception $e)
                             {
-                                var_dump($e);
+                                unset($e);
                             }
                         }
                     }
@@ -263,19 +289,33 @@
 
                         case VerdictResult::CpuNay:
                             $VotingPoolResults->CpuNayVotes += 1;
+                            break;
 
+                        case VerdictResult::VotingTie:
+                            $VotingPoolResults->TieVotes += 1;
                             break;
                     }
-
-                    $VotingPoolResults->VotingRecordsCount += 1;
                 }
                 catch (PredictionVotesNotFoundException $e)
                 {
                     $VotingPoolResults->VotingRecordsFailureCount += 1;
+
                     // Skip this!
                     unset($e);
                 }
             }
+
+            // Sort the top voters
+            arsort($VotingPoolResults->TopUsers);
+
+            $TopUsers = [];
+            foreach($VotingPoolResults->TopUsers as $user => $reputation_points)
+            {
+                if(count($TopUsers) >= 10) break;
+
+                if($reputation_points >= 1) $TopUsers[$user] = $reputation_points;
+            }
+            $VotingPoolResults->TopUsers = $TopUsers;
 
             $votesDueRecord->Status = VotesDueRecordStatus::Completed;
             $this->updatePool($votesDueRecord);

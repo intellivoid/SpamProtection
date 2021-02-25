@@ -34,13 +34,12 @@
             if($verdict < 0 || $verdict > 1)
                 throw new InvalidVoteVerdictException("The given verdict '$verdict' is not valid");
 
+            $this->Votes[$userTelegramClient->ID] = $verdict;
             if(isset($this->Votes[$userTelegramClient->ID]))
             {
-                $this->Votes[$userTelegramClient->ID] = $verdict;
                 return true;
             }
 
-            $this->Votes[$userTelegramClient->ID] = $verdict;
             return false;
         }
 
