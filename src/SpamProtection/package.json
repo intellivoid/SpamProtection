@@ -43,6 +43,10 @@
     "components": [
         {
             "required": true,
+            "file": "Abstracts/VotesDueRecordStatus.php"
+        },
+        {
+            "required": true,
             "file": "Abstracts/BlacklistFlag.php"
         },
         {
@@ -59,11 +63,27 @@
         },
         {
             "required": true,
+            "file": "Abstracts/VerdictResult.php"
+        },
+        {
+            "required": true,
+            "file": "Abstracts/VoteVerdict.php"
+        },
+        {
+            "required": true,
+            "file": "Abstracts/PredictionVotesStatus.php"
+        },
+        {
+            "required": true,
             "file": "SpamProtection.php"
         },
         {
             "required": true,
             "file": "Exceptions/DatabaseException.php"
+        },
+        {
+            "required": true,
+            "file": "Exceptions/InvalidVoteVerdictException.php"
         },
         {
             "required": true,
@@ -123,6 +143,10 @@
         },
         {
             "required": true,
+            "file": "Objects/VotesDueRecord/Records.php"
+        },
+        {
+            "required": true,
             "file": "Objects/UserClientParameters.php"
         },
         {
@@ -132,6 +156,10 @@
         {
             "required": true,
             "file": "Objects/MessageLog.php"
+        },
+        {
+            "required": true,
+            "file": "Objects/PredictionVotes/Votes.php"
         },
         {
             "required": true,
@@ -147,7 +175,15 @@
         },
         {
             "required": true,
+            "file": "Objects/VotesDueRecord.php"
+        },
+        {
+            "required": true,
             "file": "Objects/ChannelStatus.php"
+        },
+        {
+            "required": true,
+            "file": "Objects/PredictionVotes.php"
         },
         {
             "required": true,
