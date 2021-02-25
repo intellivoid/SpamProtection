@@ -106,6 +106,11 @@
                     }
                 }
 
+                if($YayCount == $NayCount)
+                {
+                    return VerdictResult::VotingTie;
+                }
+
                 if($IsSpam)
                 {
                     // If the bot thinks the content is spam

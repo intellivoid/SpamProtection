@@ -55,11 +55,12 @@
         {
             try
             {
-                $this->getCurrentPool();
+                $this->getCurrentPool(true);
+                throw new VotingPoolCurrentlyActiveException("There's a voting pool that's still active at this time");
             }
             catch(NoPoolCurrentlyActiveExceptions $e)
             {
-                throw new VotingPoolCurrentlyActiveException("There's a voting pool that's still active at this time");
+                unset($e);
             }
 
             $Query = QueryBuilder::insert_into("votes_due", [

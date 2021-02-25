@@ -11,6 +11,11 @@
     abstract class VerdictResult
     {
         /**
+         * The same amount of votes from users, CPU handles the vote.
+         */
+        const VotingTie = 4;
+
+        /**
          * No votes, the final verdict is based off the computer
          */
         const CpuNay = 3;
