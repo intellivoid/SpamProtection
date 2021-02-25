@@ -163,8 +163,9 @@
          * @throws NoPoolCurrentlyActiveExceptions
          * @throws VotingPoolCurrentlyActiveException
          */
-        public function finalizeResults(VotesDueRecord $votesDueRecord, TelegramClientManager $telegramClientManager, bool $createNewPool=true): ?VotingPoolResults
+        public function finalizeResults(VotesDueRecord $votesDueRecord, TelegramClientManager $telegramClientManager, bool $createNewPool=true)
         {
+
             if(count($votesDueRecord->Records->Records) == 0)
             {
                 $votesDueRecord->Status = VotesDueRecordStatus::NotEnoughData;
@@ -176,13 +177,13 @@
                 return null;
             }
 
+            $VotingPoolResults = new VotingPoolResults();
             $votesDueRecord->Status = VotesDueRecordStatus::BuildingReport;
             $this->updatePool($votesDueRecord);
 
             if($createNewPool)
                 $this->createPool();
 
-            $VotingPoolResults = new VotingPoolResults();
             foreach($votesDueRecord->Records->Records as $record)
             {
                 try
