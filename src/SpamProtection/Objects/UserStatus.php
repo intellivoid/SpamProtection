@@ -198,6 +198,13 @@
         public $MessagesPerMinuteData;
 
         /**
+         * Reputation points associated with this user
+         *
+         * @var int
+         */
+        public $ReputationPoints;
+
+        /**
          * Tracks the message speed
          *
          * @param int|null $time
@@ -568,7 +575,8 @@
                 '0x020' => $this->HamCount,
                 '0x021' => $this->SpamCount,
                 '0x022' => $this->PriorToSpamCount,
-                '0x023' => $this->MessagesPerMinuteData
+                '0x023' => $this->MessagesPerMinuteData,
+                '0x024' => $this->ReputationPoints
             );
         }
 
@@ -814,6 +822,15 @@
             else
             {
                 $UserStatusObject->MessagesPerMinuteData = [];
+            }
+
+            if(isset($data['0x024']))
+            {
+                $UserStatusObject->ReputationPoints = $data['0x024'];
+            }
+            else
+            {
+                $UserStatusObject->ReputationPoints = [];
             }
 
             return $UserStatusObject;

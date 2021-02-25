@@ -86,7 +86,7 @@
          * Returns True if the content is spam, false if it's ham
          * If no votes were casted, the output will be based off machine prediction
          *
-         * @return bool
+         * @return int|VerdictResult
          */
         public function getFinalVerdict(): int
         {
