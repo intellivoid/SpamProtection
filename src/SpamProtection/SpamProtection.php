@@ -9,6 +9,7 @@
     use Exception;
     use mysqli;
     use SpamProtection\Managers\MessageLogManager;
+    use SpamProtection\Managers\VotesDueManager;
     use TelegramClientManager\TelegramClientManager;
 
     include_once(__DIR__ . DIRECTORY_SEPARATOR . 'AutoConfig.php');
@@ -48,6 +49,10 @@
          */
         private $TelegramClientManager;
 
+        /**
+         * @var VotesDueManager
+         */
+        private $VotesDueManager;
 
         /**
          * SpamProtection constructor.
@@ -61,6 +66,7 @@
             $this->database = null;
 
             $this->MessageLogManager = new MessageLogManager($this);
+            $this->VotesDueManager = new VotesDueManager($this);
             $this->TelegramClientManager = null;
         }
 
@@ -126,6 +132,14 @@
                 $this->DatabaseConfiguration['Database'],
                 $this->DatabaseConfiguration['Port']
             );
+        }
+
+        /**
+         * @return VotesDueManager
+         */
+        public function getVotesDueManager(): VotesDueManager
+        {
+            return $this->VotesDueManager;
         }
 
     }
