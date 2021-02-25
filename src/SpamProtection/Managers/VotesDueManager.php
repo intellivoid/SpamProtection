@@ -11,6 +11,7 @@
     use SpamProtection\Abstracts\VerdictResult;
     use SpamProtection\Abstracts\VotesDueRecordStatus;
     use SpamProtection\Exceptions\DatabaseException;
+    use SpamProtection\Exceptions\InvalidSearchMethodException;
     use SpamProtection\Exceptions\NoPoolCurrentlyActiveExceptions;
     use SpamProtection\Exceptions\PredictionVotesNotFoundException;
     use SpamProtection\Exceptions\VotingPoolCurrentlyActiveException;
@@ -156,13 +157,13 @@
          * @param VotesDueRecord $votesDueRecord
          * @param TelegramClientManager $telegramClientManager
          * @param bool $createNewPool
-         * @return VotesDueRecord
+         * @return VotingPoolResults|null
          * @throws DatabaseException
+         * @throws InvalidSearchMethodException
          * @throws NoPoolCurrentlyActiveExceptions
          * @throws VotingPoolCurrentlyActiveException
-         * @throws \SpamProtection\Exceptions\InvalidSearchMethodException
          */
-        public function finalizeResults(VotesDueRecord $votesDueRecord, TelegramClientManager $telegramClientManager, bool $createNewPool=true)
+        public function finalizeResults(VotesDueRecord $votesDueRecord, TelegramClientManager $telegramClientManager, bool $createNewPool=true): ?VotingPoolResults
         {
             if(count($votesDueRecord->Records->Records) == 0)
             {
@@ -172,7 +173,7 @@
                 if($createNewPool)
                     $this->createPool();
 
-                return $votesDueRecord;
+                return null;
             }
 
             $votesDueRecord->Status = VotesDueRecordStatus::BuildingReport;
@@ -277,7 +278,7 @@
             $votesDueRecord->Status = VotesDueRecordStatus::Completed;
             $this->updatePool($votesDueRecord);
 
-            return $votesDueRecord;
+            return $VotingPoolResults;
         }
 
         /**

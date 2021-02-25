@@ -199,6 +199,10 @@
         },
         {
             "required": true,
+            "file": "Objects/VotingPoolResults.php"
+        },
+        {
+            "required": true,
             "file": "Objects/VotesDueRecord.php"
         },
         {
