@@ -9,6 +9,7 @@
     use Exception;
     use mysqli;
     use SpamProtection\Managers\MessageLogManager;
+    use SpamProtection\Managers\PredictionVotesManager;
     use SpamProtection\Managers\VotesDueManager;
     use TelegramClientManager\TelegramClientManager;
 
@@ -55,6 +56,11 @@
         private $VotesDueManager;
 
         /**
+         * @var PredictionVotesManager
+         */
+        private $PredictionVotesManager;
+
+        /**
          * SpamProtection constructor.
          * @throws Exception
          */
@@ -67,6 +73,7 @@
 
             $this->MessageLogManager = new MessageLogManager($this);
             $this->VotesDueManager = new VotesDueManager($this);
+            $this->PredictionVotesManager = new PredictionVotesManager($this);
             $this->TelegramClientManager = null;
         }
 
@@ -140,6 +147,14 @@
         public function getVotesDueManager(): VotesDueManager
         {
             return $this->VotesDueManager;
+        }
+
+        /**
+         * @return PredictionVotesManager
+         */
+        public function getPredictionVotesManager(): PredictionVotesManager
+        {
+            return $this->PredictionVotesManager;
         }
 
     }

@@ -47,6 +47,10 @@
         },
         {
             "required": true,
+            "file": "Abstracts/SearchMethods/PredictionVoteSearchMethod.php"
+        },
+        {
+            "required": true,
             "file": "Abstracts/BlacklistFlag.php"
         },
         {
@@ -79,6 +83,10 @@
         },
         {
             "required": true,
+            "file": "Exceptions/MessageTextCannotBeEmptyException.php"
+        },
+        {
+            "required": true,
             "file": "Exceptions/DatabaseException.php"
         },
         {
@@ -99,7 +107,15 @@
         },
         {
             "required": true,
+            "file": "Exceptions/PredictionVotesNotFoundException.php"
+        },
+        {
+            "required": true,
             "file": "Exceptions/TemporaryVerificationCodeExpiredException.php"
+        },
+        {
+            "required": true,
+            "file": "Exceptions/InvalidSearchMethodException.php"
         },
         {
             "required": true,
@@ -108,6 +124,14 @@
         {
             "required": true,
             "file": "Exceptions/InvalidSearchMethod.php"
+        },
+        {
+            "required": true,
+            "file": "Exceptions/VotingPoolCurrentlyActiveException.php"
+        },
+        {
+            "required": true,
+            "file": "Exceptions/NoPoolCurrentlyActiveExceptions.php"
         },
         {
             "required": true,
@@ -187,11 +211,19 @@
         },
         {
             "required": true,
+            "file": "Managers/PredictionVotesManager.php"
+        },
+        {
+            "required": true,
             "file": "Managers/MessageLogManager.php"
         },
         {
             "required": true,
             "file": "Managers/SettingsManager.php"
+        },
+        {
+            "required": true,
+            "file": "Managers/VotesDueManager.php"
         }
     ],
     "files": [
