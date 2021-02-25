@@ -45,6 +45,41 @@
         }
 
         /**
+         * Get the total amount of nays
+         *
+         * @return int
+         */
+        public function getNays(): int
+        {
+            $results = 0;
+
+            foreach($this->Votes as $voter => $verdict)
+            {
+                if($verdict == VoteVerdict::Nay) $results += 1;
+            }
+
+            return $results;
+        }
+
+
+        /**
+         * Get the total amount of yays
+         *
+         * @return int
+         */
+        public function getYays(): int
+        {
+            $results = 0;
+
+            foreach($this->Votes as $voter => $verdict)
+            {
+                if($verdict == VoteVerdict::Yay) $results += 1;
+            }
+
+            return $results;
+        }
+
+        /**
          * @return array
          */
         public function toArray(): array
