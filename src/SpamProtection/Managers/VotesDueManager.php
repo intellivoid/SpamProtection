@@ -163,6 +163,10 @@
          * @return VotingPoolResults|null
          * @throws DatabaseException
          * @throws InvalidSearchMethodException
+         * @throws NoPoolCurrentlyActiveExceptions
+         * @throws ReportBuildAlreadyInProgressException
+         * @throws VotingPoolAlreadyCompletedException
+         * @throws VotingPoolCurrentlyActiveException
          */
         public function finalizeResults(VotesDueRecord $votesDueRecord, TelegramClientManager $telegramClientManager, bool $createNewPool=true)
         {
@@ -211,20 +215,8 @@
                     $VotingPoolResults->VotingRecordsCount += 1;
 
                     $this->spamProtection->getPredictionVotesManager()->updatePredictionVote($votesRecord);
-
-                    if($votesRecord->isSpam())
-                    {
-                        $VotingPoolResults->SpamDatasetPath = $this->appendToDataset($votesDueRecord->ID, $votesRecord->Content, "spam");
-                        $VotingPoolResults->SpamCount += 1;
-                    }
-                    else
-                    {
-                        $VotingPoolResults->HamDatasetPath = $this->appendToDataset($votesDueRecord->ID, $votesRecord->Content, "ham");
-                        $VotingPoolResults->HamCount += 1;
-                    }
-
-
                     $FinalVerdict = $votesRecord->getFinalVerdict();
+
                     if($FinalVerdict == VerdictResult::Yay || $FinalVerdict == VerdictResult::Nay)
                     {
                         foreach($votesRecord->getPunishableVoters() as $punishableVoter)
@@ -235,13 +227,13 @@
                                     TelegramClientSearchMethod::byId, $punishableVoter
                                 );
                                 $UserStatus = SettingsManager::getUserStatus($PunishedVoter);
-                                $UserStatus->ReputationPoints -= 1;
+                                $UserStatus->ReputationPoints -= 10;
                                 $PunishedVoter = SettingsManager::updateUserStatus($PunishedVoter, $UserStatus);
                                 $telegramClientManager->getTelegramClientManager()->updateClient($PunishedVoter);
 
                                 if(isset($VotingPoolResults->TopUsers[$punishableVoter]) == false)
                                     $VotingPoolResults->TopUsers[$punishableVoter] = 0;
-                                $VotingPoolResults->TopUsers[$punishableVoter] -= 1;
+                                $VotingPoolResults->TopUsers[$punishableVoter] -= 10;
                             }
                             catch(Exception $e)
                             {
@@ -269,6 +261,18 @@
                             {
                                 unset($e);
                             }
+                        }
+
+                        // Only use data from user votes
+                        if($votesRecord->isSpam())
+                        {
+                            $VotingPoolResults->SpamDatasetPath = $this->appendToDataset($votesDueRecord->ID, $votesRecord->Content, "spam");
+                            $VotingPoolResults->SpamCount += 1;
+                        }
+                        else
+                        {
+                            $VotingPoolResults->HamDatasetPath = $this->appendToDataset($votesDueRecord->ID, $votesRecord->Content, "ham");
+                            $VotingPoolResults->HamCount += 1;
                         }
                     }
 
