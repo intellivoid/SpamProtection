@@ -340,12 +340,12 @@
 
             if($this->IsAgent)
             {
-                throw new PropertyConflictedException("You can't blacklist a agent");
+                throw new PropertyConflictedException("You can't blacklist an agent");
             }
 
             if($this->IsOperator)
             {
-                throw new PropertyConflictedException("You can't blacklist a operator");
+                throw new PropertyConflictedException("You can't blacklist an operator");
             }
 
             // Auto-capitalize the flag
