@@ -183,6 +183,10 @@
         },
         {
             "required": true,
+            "file": "Objects/DirectClientStatus.php"
+        },
+        {
+            "required": true,
             "file": "Objects/UserStatus.php"
         },
         {
