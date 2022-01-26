@@ -8,6 +8,7 @@
 
     use SpamProtection\Objects\ChannelStatus;
     use SpamProtection\Objects\ChatSettings;
+    use SpamProtection\Objects\DirectClientStatus;
     use SpamProtection\Objects\UserStatus;
     use TelegramClientManager\Objects\TelegramClient;
 
@@ -105,6 +106,35 @@
         public static function updateChannelStatus(TelegramClient $telegramClient, ChannelStatus $channelStatus): TelegramClient
         {
             $telegramClient->SessionData->Data["channel_status"] = $channelStatus->toArray();
+            return $telegramClient;
+        }
+
+        /**
+         * Returns the DirectClientStatus object from a TelegramClient
+         *
+         * @param TelegramClient $telegramClient
+         * @return DirectClientStatus
+         */
+        public static function getDirectClientStatus(TelegramClient $telegramClient): DirectClientStatus
+        {
+            if(isset($telegramClient->SessionData->Data["direct_client_status"]) == false)
+            {
+                $telegramClient->SessionData->Data["direct_client_status"] = DirectClientStatus::fromArray($telegramClient->Chat, $telegramClient->User, [])->toArray();
+            }
+
+            return DirectClientStatus::fromArray($telegramClient->Chat, $telegramClient->User, $telegramClient->SessionData->Data["direct_client_status"]);
+        }
+
+        /**
+         * Updates the DirectClientStatus object from the Telegram Client
+         *
+         * @param TelegramClient $telegramClient
+         * @param DirectClientStatus $directClientStatus
+         * @return TelegramClient
+         */
+        public static function updateDirectClientStatus(TelegramClient $telegramClient, DirectClientStatus $directClientStatus): TelegramClient
+        {
+            $telegramClient->SessionData->Data["direct_client_status"] = $directClientStatus->toArray();
             return $telegramClient;
         }
     }
