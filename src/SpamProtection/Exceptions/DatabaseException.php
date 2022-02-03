@@ -30,7 +30,7 @@
         {
             $this->query = $query;
             $this->error = $error;
-            parent::__construct('There was an exception with the Database Operation',  0, null);
+            parent::__construct($error,  0, null);
         }
 
         /**
