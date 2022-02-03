@@ -388,6 +388,9 @@
                 $MessageObject->Caption = $data['caption'];
             }
 
+            if($MessageObject->Text == null && $MessageObject->Caption !== null)
+                $MessageObject->Text = $MessageObject->Caption;
+
             return $MessageObject;
         }
     }
